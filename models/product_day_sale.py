@@ -4,6 +4,8 @@ from typing import Optional
 from pydantic import condecimal
 from sqlmodel import SQLModel, Field, Relationship
 
+from config.moreno import Moreno
+
 
 class ProductDaySaleBase(SQLModel):
     price: condecimal(decimal_places=1) = Field(default=0)
@@ -11,7 +13,12 @@ class ProductDaySaleBase(SQLModel):
     product_id: Optional[int] = Field(default=None, foreign_key="product_tbl.id")
 
 
-class ProductDaySale(ProductDaySaleBase, table=True):
+class ProductDaySaleCreate(SQLModel):
+    price: condecimal(decimal_places=1) = Field(default=0)
+    product_id: Optional[int]
+
+
+class ProductDaySale(Moreno, ProductDaySaleBase, table=True):
     __tablename__ = 'product_day_sale_tbl'
     id: Optional[int] = Field(default=None, primary_key=True)
     created: Optional[datetime] = Field(default=datetime.now(), nullable=False)
@@ -28,6 +35,17 @@ class ProductDaySale(ProductDaySaleBase, table=True):
     productPlaceSales: list["ProductPlaceSale"] = Relationship(back_populates="productDaySale",
                                                                sa_relationship_kwargs={"lazy": "subquery"})
 
+    def calculate_totals(self):
+        self.quantityInitial = 0
+        self.quantityRest = 0
+        self.quantitySold = 0
+        self.totalSale = 0.0
+        for productPlaceSale in self.productPlaceSales:
+            self.quantityInitial += productPlaceSale.quantityInitial
+            self.quantityRest += productPlaceSale.quantityRest
+            self.quantitySold += productPlaceSale.quantitySold
+            self.totalSale += productPlaceSale.totalSale
+
 
 class ProductDaySaleRead(ProductDaySaleBase):
     id: int
@@ -37,10 +55,15 @@ class ProductDaySaleRead(ProductDaySaleBase):
     totalSale: float
 
 
+class ProductDaySaleReadCreate(ProductDaySaleRead):
+    product_id: int
+    productPlaceSales: list["ProductPlaceSaleReadDaySaleCreate"] = []
+
+
 class ProductDaySaleReadWithDetails(ProductDaySaleRead):
-    product: Optional["ProductRead"] = None
+    product_id: int
     productPlaceSales: list["ProductPlaceSaleRead"] = []
 
 
 class ProductDaySaleUpdate(SQLModel):
-    price: Optional[condecimal(decimal_places=1)]
+    price: condecimal(decimal_places=1)

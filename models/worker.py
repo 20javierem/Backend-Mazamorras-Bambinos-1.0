@@ -3,12 +3,15 @@ from typing import Optional
 
 from sqlmodel import SQLModel, Field, Relationship
 
+from config.encryption import encrypt
+from config.moreno import Moreno
+
 
 class WorkerBase(SQLModel):
     names: str
     lastNames: str
-    sex: str
     dni: str
+    sex: str
     phone: str
     salary: float
     start: Optional[date]
@@ -18,19 +21,26 @@ class WorkerBase(SQLModel):
     typeWorker_id: int = Field(default=None, foreign_key="type_worker_tbl.id")
 
 
-class Worker(WorkerBase, table=True):
+class Worker(Moreno, WorkerBase, table=True):
     __tablename__ = 'worker_tbl'
     id: Optional[int] = Field(default=None, primary_key=True)
-    delete: bool = Field(default=False)
+    deleted: bool = Field(default=False)
+    password: str = Field(default=None)
     created: Optional[datetime] = Field(default=datetime.now(), nullable=False)
     updated: Optional[datetime] = Field(default=datetime.now(), nullable=False,
                                         sa_column_kwargs={"onupdate": datetime.now})
-    password: str = Field(default=None)
     typeWorker: Optional["TypeWorker"] = Relationship(sa_relationship_kwargs={"lazy": "joined"})
+
+    async def save(self):
+        if self.password is None:
+            self.password = encrypt(self.dni)
+        return await super().save()
 
 
 class WorkerRead(WorkerBase):
     id: int
+    deleted: bool
+    password: str
 
 
 class WorkerReadWithType(WorkerRead):

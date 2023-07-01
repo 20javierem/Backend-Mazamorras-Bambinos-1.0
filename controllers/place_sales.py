@@ -2,7 +2,8 @@ from datetime import datetime
 
 from sqlmodel import select
 
-from config.db import Session
+from config.moreno import Session
+from models import Place, Worker
 from models.day_sale import DaySale
 from models.place_sale import PlaceSale
 
@@ -10,20 +11,6 @@ from models.place_sale import PlaceSale
 async def get(id: int):
     with Session() as session:
         return session.get(PlaceSale, id)
-
-
-async def save(placeSale: PlaceSale):
-    with Session() as session:
-        session.add(placeSale)
-        session.commit()
-        session.refresh(placeSale)
-        return placeSale
-
-
-async def delete(placeSale: PlaceSale):
-    with Session() as session:
-        session.delete(placeSale)
-        session.commit()
 
 
 async def all():
@@ -43,6 +30,19 @@ async def getByWorkerBetween(id: int, start: str, end: str):
             return day_sales
     except ValueError:
         return list()
+
+
+async def getByDaySalePlaceWorker(idDaySale: int, idPlace: int, idWorker: int):
+    with Session() as session:
+        statement = select(PlaceSale).join(DaySale).join(Worker).where(Place.id == idPlace, Worker.id == idWorker,
+                                                                       DaySale.id == idDaySale)
+        return session.exec(statement).first()
+
+
+async def getByDaySaleWorker(idDaySale: int, idWorker: int):
+    with Session() as session:
+        statement = select(PlaceSale).join(DaySale).join(Worker).where(Worker.id == idWorker, DaySale.id == idDaySale)
+        return session.exec(statement).first()
 
 
 async def getByPlaceBetween(id: int, start: str, end: str):

@@ -8,7 +8,7 @@ apiProducts = APIRouter()
 
 
 @apiProducts.get("/", response_model=list[ProductRead], status_code=status.HTTP_200_OK)
-async def all(user=Depends(manager)):
+async def get_all(user=Depends(manager)):
     places_list: list[ProductRead] = await products.all()
     return places_list
 
@@ -16,7 +16,7 @@ async def all(user=Depends(manager)):
 @apiProducts.post("/", response_model=ProductRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: ProductCreate, user=Depends(manager)):
     product: Product = Product.from_orm(schema)
-    product: ProductRead = await products.save(product)
+    await product.save()
     return product
 
 
@@ -36,7 +36,7 @@ async def update(id: int, schema: ProductUpdate, user=Depends(manager)):
     schema_data = schema.dict(exclude_unset=True)
     for key, value in schema_data.items():
         setattr(product, key, value)
-    product: ProductRead = await products.save(product)
+    await product.save()
     return product
 
 
@@ -45,9 +45,9 @@ async def delete(id: int, user=Depends(manager)):
     product: Product = await products.get(id)
     if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
-    if products.hasDependences(product):
+    if await products.hasDependences(product):
         product.active = False
-        await products.save(product)
+        await product.save()
     else:
-        await products.delete(product)
+        await product.save()
     return Response(status_code=status.HTTP_204_NO_CONTENT)

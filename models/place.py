@@ -4,6 +4,8 @@ from typing import Optional
 from pydantic import validator
 from sqlmodel import SQLModel, Field, Relationship
 
+from config.moreno import Moreno
+
 
 class PlaceBase(SQLModel):
     description: str
@@ -18,19 +20,20 @@ class PlaceBase(SQLModel):
         return v
 
 
-class Place(PlaceBase, table=True):
+class Place(Moreno, PlaceBase, table=True):
     __tablename__ = 'place_tbl'
+
     id: Optional[int] = Field(default=None, primary_key=True)
-    delete: bool = Field(default=False)
+    deleted: bool = Field(default=False)
     created: Optional[datetime] = Field(default=datetime.now(), nullable=False)
     updated: Optional[datetime] = Field(default=datetime.now(), nullable=False,
                                         sa_column_kwargs={"onupdate": datetime.now})
     typePlace: Optional["TypePlace"] = Relationship(sa_relationship_kwargs={"lazy": "subquery"})
 
 
-
 class PlaceRead(PlaceBase):
     id: int
+    deleted: bool
 
 
 class PlaceReadWithType(PlaceRead):

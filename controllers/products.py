@@ -1,6 +1,6 @@
 from sqlmodel import select
 
-from config.db import Session
+from config.moreno import Session
 from models import ProductDaySale
 from models.product import Product
 
@@ -8,20 +8,6 @@ from models.product import Product
 async def get(id: int):
     with Session() as session:
         return session.get(Product, id)
-
-
-async def save(product: Product):
-    with Session() as session:
-        session.add(product)
-        session.commit()
-        session.refresh(product)
-        return product
-
-
-async def delete(product: Product):
-    with Session() as session:
-        session.delete(product)
-        session.commit()
 
 
 async def all():

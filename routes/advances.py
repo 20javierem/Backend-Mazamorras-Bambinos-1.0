@@ -1,22 +1,37 @@
 from fastapi import APIRouter, Response, status, Depends, HTTPException
 
 import controllers.advances as advances
-from models.advance import Advance, AdvanceBase, AdvanceUpdate, AdvanceReadWithDetails
+from controllers import day_sales, place_sales
+from models import DaySale, PlaceSale
+from models.advance import Advance, AdvanceBase, AdvanceUpdate, AdvanceReadWithDetails, AdvanceRead
 from routes.sessions import manager
 
 apiAdvances = APIRouter()
 
 
 @apiAdvances.get("/", response_model=list[AdvanceReadWithDetails], status_code=status.HTTP_200_OK)
-async def all(user=Depends(manager)):
+async def get_all(user=Depends(manager)):
     day_sales_list = await advances.all()
     return day_sales_list
 
 
-@apiAdvances.post("/", response_model=AdvanceReadWithDetails, status_code=status.HTTP_201_CREATED)
+@apiAdvances.post("/", response_model=AdvanceRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: AdvanceBase, user=Depends(manager)):
     advance: Advance = Advance.from_orm(schema)
-    await advances.save(advance)
+    if advance.placeSale_id is not None:
+        advance.daySale_id = None
+        await advance.save()
+        placeSale: PlaceSale = await place_sales.get(advance.placeSale_id)
+        placeSale.calculate_totals()
+        await placeSale.save()
+        daySale: DaySale = await day_sales.get(advance.placeSale.daySale_id)
+        daySale.calculate_totals()
+        await daySale.save()
+    else:
+        await advance.save()
+        daySale: DaySale = await day_sales.get(advance.daySale_id)
+        daySale.calculate_totals()
+        await daySale.save()
     return advance
 
 
@@ -28,7 +43,7 @@ async def get(id: int, user=Depends(manager)):
     return advance
 
 
-@apiAdvances.patch('/{id}', response_model=AdvanceReadWithDetails, status_code=status.HTTP_202_ACCEPTED)
+@apiAdvances.patch('/{id}', response_model=AdvanceRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: AdvanceUpdate, user=Depends(manager)):
     advance: Advance = await advances.get(id)
     if not advance:
@@ -36,7 +51,19 @@ async def update(id: int, schema: AdvanceUpdate, user=Depends(manager)):
     schema_data = schema.dict(exclude_unset=True)
     for key, value in schema_data.items():
         setattr(advance, key, value)
-    advance: AdvanceReadWithDetails = await advances.save(advance)
+    place_sale_id: int = advance.placeSale_id
+    day_sale_id: int = advance.daySale_id
+    await advance.save()
+
+    if place_sale_id is not None:
+        placeSale: PlaceSale = await place_sales.get(place_sale_id)
+        day_sale_id: int = placeSale.daySale_id
+        placeSale.calculate_totals()
+        await placeSale.save()
+    daySale: DaySale = await day_sales.get(day_sale_id)
+    daySale.calculate_totals()
+    await daySale.save()
+
     return advance
 
 
@@ -45,5 +72,17 @@ async def delete(id: int, user=Depends(manager)):
     advance: Advance = await advances.get(id)
     if not advance:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
-    await advances.delete(advance)
+    place_sale_id: int = advance.placeSale_id
+    day_sale_id: int = advance.daySale_id
+    await advance.delete()
+
+    if place_sale_id is not None:
+        placeSale: PlaceSale = await place_sales.get(place_sale_id)
+        day_sale_id: int = placeSale.daySale_id
+        placeSale.calculate_totals()
+        await placeSale.save()
+    daySale: DaySale = await day_sales.get(day_sale_id)
+    daySale.calculate_totals()
+    await daySale.save()
+
     return Response(status_code=status.HTTP_204_NO_CONTENT)

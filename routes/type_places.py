@@ -8,7 +8,7 @@ apiTypePlaces = APIRouter()
 
 
 @apiTypePlaces.get("/", response_model=list[TypePlaceRead], status_code=status.HTTP_200_OK)
-async def all(user=Depends(manager)):
+async def get_all(user=Depends(manager)):
     types_places_list: list[TypePlaceRead] = await type_places.all()
     return types_places_list
 
@@ -16,7 +16,7 @@ async def all(user=Depends(manager)):
 @apiTypePlaces.post("/", response_model=TypePlaceRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: TypePlaceCreate, user=Depends(manager)):
     type_place: TypePlace = TypePlace.from_orm(schema)
-    type_place = await type_places.save(type_place)
+    await type_place.save()
     return type_place
 
 
@@ -36,7 +36,7 @@ async def update(id: int, schema: TypePlaceUpdate, user=Depends(manager)):
     schema_data = schema.dict(exclude_unset=True)
     for key, value in schema_data.items():
         setattr(type_place, key, value)
-    type_place = await type_places.save(type_place)
+    await type_place.save()
     return type_place
 
 
@@ -45,5 +45,9 @@ async def delete(id: int, user=Depends(manager)):
     type_place: TypePlace = await type_places.get(id)
     if not type_place:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
-    await type_places.delete(type_place)
+    if await type_places.hasDependences(type_place):
+        type_place.deleted = True
+        await type_place.save()
+    else:
+        await type_place.delete()
     return Response(status_code=status.HTTP_204_NO_CONTENT)

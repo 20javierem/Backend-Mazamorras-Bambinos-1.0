@@ -1,29 +1,14 @@
 from sqlmodel import select
 
-from config.db import Session, get_password_hash
+from config.moreno import Session
+from config.encryption import encrypt
+from models import PlaceSale
 from models.worker import Worker
 
 
 async def get(id: int):
     with Session() as session:
         return session.get(Worker, id)
-
-
-async def save(worker: Worker):
-    with Session() as session:
-        if worker.password is None:
-            worker.password = get_password_hash(worker.dni)
-        session.add(worker)
-        session.commit()
-        session.refresh(worker)
-        return worker
-
-
-async def delete(worker: Worker):
-    with Session() as session:
-        session.delete(worker)
-        session.commit()
-
 
 async def all():
     with Session() as session:
@@ -37,8 +22,13 @@ async def actives():
         return session.exec(statement).all()
 
 
+async def hasDependences(worker: Worker) -> bool:
+    with Session() as session:
+        statement = select(PlaceSale).join(Worker).where(Worker.id == worker.id)
+        return len(session.exec(statement).unique().all()) > 0
+
+
 async def getByDni(dni: str):
     with Session() as session:
         statement = select(Worker).where(Worker.dni == dni)
         return session.exec(statement).first()
-

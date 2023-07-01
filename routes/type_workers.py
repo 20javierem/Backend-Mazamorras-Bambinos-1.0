@@ -1,26 +1,26 @@
 from fastapi import APIRouter, Response, status, Depends, HTTPException
 
 import controllers.type_workers as types_workers
-from models.type_worker import TypeWorker, TypeWorkerCreate, TypeWorkerUpdate
+from models.type_worker import TypeWorker, TypeWorkerCreate, TypeWorkerUpdate, TypeWorkerRead
 from routes.sessions import manager
 
 apiTypeWorkers = APIRouter()
 
 
-@apiTypeWorkers.get("/", response_model=list[TypeWorker], status_code=status.HTTP_200_OK)
-async def all(user=Depends(manager)):
+@apiTypeWorkers.get("/", response_model=list[TypeWorkerRead], status_code=status.HTTP_200_OK)
+async def get_all(user=Depends(manager)):
     list_types_workers = await types_workers.all()
     return list_types_workers
 
 
-@apiTypeWorkers.post("/", response_model=TypeWorker, status_code=status.HTTP_201_CREATED)
+@apiTypeWorkers.post("/", response_model=TypeWorkerRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: TypeWorkerCreate):
     type_worker: TypeWorker = TypeWorker.from_orm(schema)
-    type_worker = await types_workers.save(type_worker)
+    await type_worker.save()
     return type_worker
 
 
-@apiTypeWorkers.get("/{id}", response_model=TypeWorker, status_code=status.HTTP_200_OK)
+@apiTypeWorkers.get("/{id}", response_model=TypeWorkerRead, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
     type_worker: TypeWorker = await types_workers.get(id)
     if type_worker is None:
@@ -28,7 +28,7 @@ async def get(id: int, user=Depends(manager)):
     return type_worker
 
 
-@apiTypeWorkers.patch('/{id}', response_model=TypeWorker, status_code=status.HTTP_202_ACCEPTED)
+@apiTypeWorkers.patch('/{id}', response_model=TypeWorkerRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: TypeWorkerUpdate, user=Depends(manager)):
     type_worker: TypeWorker = await types_workers.get(id)
     if not type_worker:
@@ -36,7 +36,7 @@ async def update(id: int, schema: TypeWorkerUpdate, user=Depends(manager)):
     schema_data = schema.dict(exclude_unset=True)
     for key, value in schema_data.items():
         setattr(type_worker, key, value)
-    type_worker = await types_workers.save(type_worker)
+    await type_worker.save()
     return type_worker
 
 
@@ -45,5 +45,9 @@ async def delete(id: int, user=Depends(manager)):
     type_worker: TypeWorker = await types_workers.get(id)
     if not type_worker:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
-    await types_workers.delete(type_worker)
+    if await types_workers.hasDependences(type_worker):
+        type_worker.deleted = True
+        await type_worker.save()
+    else:
+        await type_worker.delete()
     return Response(status_code=status.HTTP_204_NO_CONTENT)

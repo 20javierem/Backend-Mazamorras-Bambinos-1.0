@@ -4,35 +4,39 @@ from typing import Optional
 from pydantic import condecimal
 from sqlmodel import SQLModel, Field, Relationship
 
+from config.moreno import Moreno
 
-class ExpenseCreate(SQLModel):
+
+class MotionBase(SQLModel):
     description: str
     amount: condecimal(decimal_places=1) = Field(default=0)
+    income: bool
     daySale_id: int = Field(default=None, foreign_key="day_sale_tbl.id")
     placeSale_id: int = Field(default=None, foreign_key="place_sale_tbl.id")
 
 
-class Expense(ExpenseCreate, table=True):
-    __tablename__ = 'expenses_tbl'
+class Motion(Moreno, MotionBase, table=True):
+    __tablename__ = 'motion_tbl'
     id: Optional[int] = Field(default=None, primary_key=True)
     created: Optional[datetime] = Field(default=datetime.now(), nullable=False)
     updated: Optional[datetime] = Field(default=datetime.now(), nullable=False,
                                         sa_column_kwargs={"onupdate": datetime.now})
 
-    daySale: Optional["DaySale"] = Relationship(back_populates="expenses", sa_relationship_kwargs={"lazy": "subquery"})
-    placeSale: Optional["PlaceSale"] = Relationship(back_populates="expenses",
+    daySale: Optional["DaySale"] = Relationship(back_populates="motions", sa_relationship_kwargs={"lazy": "subquery"})
+    placeSale: Optional["PlaceSale"] = Relationship(back_populates="motions",
                                                     sa_relationship_kwargs={"lazy": "subquery"})
 
 
-class ExpenseRead(ExpenseCreate):
+class MotionRead(MotionBase):
     id: int
 
 
-class ExpenseWithDetails(ExpenseRead):
+class MotionWithDetails(MotionRead):
     daySale: Optional["DaySaleRead"] = None
     placeSale: Optional["PlaceSaleRead"] = None
 
 
-class ExpenseUpdate(SQLModel):
+class MotionUpdate(SQLModel):
     description: Optional[str]
+    income: Optional[bool]
     amount: Optional[condecimal(decimal_places=1)]

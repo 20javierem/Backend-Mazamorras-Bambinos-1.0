@@ -1,6 +1,7 @@
 from sqlmodel import select
 
-from config.db import Session
+from config.moreno import Session
+from models import Place
 from models.type_place import TypePlace
 
 
@@ -9,21 +10,13 @@ async def get(id: int):
         return session.get(TypePlace, id)
 
 
-async def save(typePlace: TypePlace):
-    with Session() as session:
-        session.add(typePlace)
-        session.commit()
-        session.refresh(typePlace)
-        return typePlace
-
-
-async def delete(typePlace: TypePlace):
-    with Session() as session:
-        session.delete(typePlace)
-        session.commit()
-
-
 async def all():
     with Session() as session:
         statement = select(TypePlace)
         return session.exec(statement).all()
+
+
+async def hasDependences(typePlace: TypePlace) -> bool:
+    with Session() as session:
+        statement = select(Place).join(TypePlace).where(TypePlace.id == typePlace.id)
+        return len(session.exec(statement).unique().all()) > 0

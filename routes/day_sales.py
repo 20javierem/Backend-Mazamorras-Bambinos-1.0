@@ -1,22 +1,46 @@
 from fastapi import APIRouter, Response, status, Depends, HTTPException
 
 import controllers.day_sales as day_sales
-from models.day_sale import DaySale, DaySaleBase, DaySaleUpdate, DaySaleReadWithDetails, DaySaleRead
+from models import PlaceSale, ProductDaySale
+from models.day_sale import DaySale, DaySaleBase, DaySaleUpdate, DaySaleReadWithDetails, DaySaleRead, DaySaleReadCreate
 from routes.sessions import manager
+from models.product_place_sale import ProductPlaceSale
 
 apiDaySales = APIRouter()
 
 
 @apiDaySales.get("/", response_model=list[DaySaleRead], status_code=status.HTTP_200_OK)
-async def all(user=Depends(manager)):
-    day_sales_list = await day_sales.all()
+async def get_all(user=Depends(manager)):
+    day_sales_list = await day_sales.get_all()
     return day_sales_list
 
 
-@apiDaySales.post("/", response_model=DaySaleReadWithDetails, status_code=status.HTTP_201_CREATED)
+@apiDaySales.post("/", response_model=DaySaleReadCreate, status_code=status.HTTP_201_CREATED)
 async def create(schema: DaySaleBase, user=Depends(manager)):
-    day_sale = await day_sales.save(schema.to_day_sale())
-    return day_sale
+    daySale: DaySale = DaySale.from_orm(schema)
+    if await day_sales.get_of_date(str(daySale.date)) is not None:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail={"Error": "Date registered"})
+    daySale = await daySale.save()  # idDaySale
+
+    for product_day_sale in schema.productDaySales:
+        productDaySale: ProductDaySale = ProductDaySale.from_orm(product_day_sale)
+        productDaySale.daySale_id = daySale.id
+        await productDaySale.save()  # idProductDaySale
+
+    daySale = await day_sales.get(daySale.id)
+
+    for placeSale in schema.placeSales:
+        placeSale = PlaceSale.from_orm(placeSale)
+        placeSale.daySale_id = daySale.id
+        placeSale = await placeSale.save()  # idPlaceSale
+        for productDaySale in daySale.productDaySales:
+            await (ProductPlaceSale(
+                productDaySale_id=productDaySale.id,
+                placeSale_id=placeSale.id)
+            ).save()  # idProductPlaceSale
+
+    daySale = await day_sales.get(daySale.id)
+    return daySale
 
 
 @apiDaySales.get("/{id}", response_model=DaySaleReadWithDetails, status_code=status.HTTP_200_OK)
@@ -35,7 +59,7 @@ async def update(id: int, schema: DaySaleUpdate, user=Depends(manager)):
     schema_data = schema.dict(exclude_unset=True)
     for key, value in schema_data.items():
         setattr(day_sale, key, value)
-    day_sale: DaySaleReadWithDetails = await day_sales.save(day_sale)
+    await day_sale.save()
     return day_sale
 
 
@@ -44,13 +68,13 @@ async def delete(id: int, user=Depends(manager)):
     day_sale: DaySale = await day_sales.get(id)
     if not day_sale:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
-    await day_sales.delete(day_sale)
+    await day_sale.delete()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @apiDaySales.get("/date/{date}", response_model=DaySaleReadWithDetails, status_code=status.HTTP_200_OK)
 async def get_by_date(date: str, user=Depends(manager)):
-    day_sale: DaySaleReadWithDetails = await day_sales.getOfDate(date)
+    day_sale: DaySaleReadWithDetails = await day_sales.get_of_date(date)
     if day_sale is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     return day_sale
@@ -58,5 +82,5 @@ async def get_by_date(date: str, user=Depends(manager)):
 
 @apiDaySales.get("/between/{start}/{end}", response_model=list[DaySale], status_code=status.HTTP_200_OK)
 async def get_between(start: str, end: str, user=Depends(manager)):
-    day_sales_list: list[DaySale] = await day_sales.getByRangeOfDate(start, end)
+    day_sales_list: list[DaySale] = await day_sales.get_by_range_of_date(start, end)
     return day_sales_list
