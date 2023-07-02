@@ -74,7 +74,7 @@ async def delete(id: int, user=Depends(manager)):
 
 @apiDaySales.get("/date/{date}", response_model=DaySaleReadWithDetails, status_code=status.HTTP_200_OK)
 async def get_by_date(date: str, user=Depends(manager)):
-    day_sale: DaySaleReadWithDetails = await day_sales.get_of_date(date)
+    day_sale: DaySale = await day_sales.get_of_date(date)
     if day_sale is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     return day_sale
