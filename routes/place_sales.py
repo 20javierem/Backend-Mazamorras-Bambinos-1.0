@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status, Depends, HTTPException
 
 from controllers import place_sales, day_sales, product_place_sales, transfers, workers, motions, advances
-from models import DaySale, ProductPlaceSale, Worker
+from models import DaySale, ProductPlaceSale, Worker, Transfer, Motion
 from models.place_sale import PlaceSaleReadWithDetails, PlaceSaleUpdate, PlaceSale, PlaceSaleRead, PlaceSaleBase, \
     PlaceSaleReadCreateWithDetails
 from routes.sessions import manager
@@ -40,9 +40,9 @@ async def get(id: int, user=Depends(manager)):
 @apiPlaceSales.patch('/{id}', response_model=PlaceSaleRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: PlaceSaleUpdate, user=Depends(manager)):
     placeSale: PlaceSale = await place_sales.get(id)
-    workerOld: Worker = placeSale.worker
     if not placeSale:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
+    workerOld: Worker = placeSale.worker
     schema_data = schema.dict(exclude_unset=True)
     for key, value in schema_data.items():
         setattr(placeSale, key, value)
@@ -56,23 +56,27 @@ async def update(id: int, schema: PlaceSaleUpdate, user=Depends(manager)):
 
 @apiPlaceSales.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
-    place_sale: PlaceSale = await place_sales.get(id)
-    daySale_id = place_sale.daySale_id
-    if not place_sale:
+    placeSale: PlaceSale = await place_sales.get(id)
+    if not placeSale:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
+    daySale_id = placeSale.daySale_id
     placesSalesModifies: list[int] = list()
 
-    for transfer in place_sale.transfersEntry:
+    for transfer in placeSale.transfersEntry:
         placesSalesModifies.append(transfer.source_id)
-        await (await transfers.get(transfer.id)).delete()
-    for transfer in place_sale.transfersExit:
+        transfer: Transfer = await transfers.get(transfer.id)
+        await transfer.delete()
+    for transfer in placeSale.transfersExit:
         placesSalesModifies.append(transfer.destiny_id)
-        await (await transfers.get(transfer.id)).delete()
+        transfer: Transfer = await transfers.get(transfer.id)
+        await transfer.delete()
 
-    for motion in place_sale.motions:
-        await (await motions.get(motion.id)).delete()
-    for advance in place_sale.advances:
-        await (await advances.get(advance.id)).delete()
+    for motion in placeSale.motions:
+        motion: Motion = await motions.get(motion.id)
+        await motion.delete()
+    for advance in placeSale.advances:
+        advance: Motion = await advances.get(advance.id)
+        await advance.delete()
 
     for placeSale_id in placesSalesModifies:
         placeSale = await place_sales.get(placeSale_id)
@@ -84,10 +88,11 @@ async def delete(id: int, user=Depends(manager)):
         placeSale.calculate_totals()
         await placeSale.save()
 
-    for productPlaceSale in place_sale.productPlaceSales:
-        await (await product_place_sales.get(productPlaceSale.id)).delete()
+    for productPlaceSale in placeSale.productPlaceSales:
+        productPlaceSale: ProductPlaceSale = await product_place_sales.get(productPlaceSale.id)
+        await productPlaceSale.delete()
 
-    await place_sale.delete()
+    await placeSale.delete()
     daySale: DaySale = await day_sales.get(daySale_id)
     daySale.calculate_totals()
     await daySale.save()

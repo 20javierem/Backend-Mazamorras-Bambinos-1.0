@@ -73,10 +73,10 @@ class DaySaleReadCreate(SQLModel):
 
 
 class DaySaleReadWithDetails(DaySaleRead):
-    placeSales: list["PlaceSaleReadWithTransfers"] = []
+    placeSales: list["PlaceSaleReadForDaySale"] = []
     productDaySales: list["ProductDaySaleReadWithDetails"] = []
     advances: list["AdvanceRead"] = []
-    motions: list["Motion"] = []
+    motions: list["MotionRead"] = []
 
 
 class DaySaleUpdate(SQLModel):

@@ -100,7 +100,7 @@ class PlaceSaleReadWithDetails(PlaceSaleRead):
     daySale: Optional["DaySaleRead"] = None
 
     advances: list["AdvanceRead"] = []
-    expenses: list["MotionRead"] = []
+    motions: list["MotionRead"] = []
     transfersExit: list["TransferRead"] = []
     transfersEntry: list["TransferRead"] = []
     productPlaceSales: list["ProductPlaceSale"] = []
@@ -112,8 +112,10 @@ class PlaceSaleReadCreateWithDetails(PlaceSaleRead):
     productPlaceSales: list["ProductPlaceSaleReadDaySaleCreate"] = []
 
 
-class PlaceSaleReadWithTransfers(PlaceSaleRead):
+class PlaceSaleReadForDaySale(PlaceSaleRead):
     transfersExit: list["TransferRead"] = []
+    motions: list["MotionRead"] = []
+    advances: list["AdvanceRead"] = []
 
 
 class PlaceSaleUpdate(SQLModel):
