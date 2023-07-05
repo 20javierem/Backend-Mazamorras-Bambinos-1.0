@@ -19,13 +19,8 @@ async def get_all(user=Depends(manager)):
 async def create(schema: TransferBase, user=Depends(manager)):
     transfer: Transfer = Transfer.from_orm(schema)
     await transfer.save()
-
-    source: PlaceSale = await place_sales.get(transfer.source_id)
-    await update_totals(source, transfer.productDaySale_id)
-
-    destiny: PlaceSale = await place_sales.get(transfer.destiny_id)
-    await update_totals(destiny, transfer.productDaySale_id)
-
+    await update_totals(transfer.source_id, transfer.productDaySale_id)
+    await update_totals(transfer.destiny_id, transfer.productDaySale_id)
     return transfer
 
 
@@ -42,9 +37,8 @@ async def update(id: int, schema: TransferUpdate, user=Depends(manager)):
     transfer: Transfer = await transfers.get(id)
     if not transfer:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
-
-    source: PlaceSale = await place_sales.get(transfer.source_id)
-    destiny: PlaceSale = await place_sales.get(transfer.destiny_id)
+    sourceOld_id: int = transfer.source_id
+    destinyOld_id: int = transfer.destiny_id
 
     transfer: Transfer = await transfers.get(id)
     schema_data = schema.dict(exclude_unset=True)
@@ -52,14 +46,13 @@ async def update(id: int, schema: TransferUpdate, user=Depends(manager)):
         setattr(transfer, key, value)
     await transfer.save()
 
-    await update_totals(source, transfer.productDaySale_id)
-    await update_totals(destiny, transfer.productDaySale_id)
+    if sourceOld_id != transfer.source_id & sourceOld_id != transfer.destiny_id:
+        await update_totals(sourceOld_id, transfer.productDaySale_id)
+    elif destinyOld_id != transfer.source_id & destinyOld_id != transfer.destiny_id:
+        await update_totals(destinyOld_id, transfer.productDaySale_id)
 
-    source: PlaceSale = await place_sales.get(transfer.source_id)
-    destiny: PlaceSale = await place_sales.get(transfer.destiny_id)
-
-    await update_totals(source, transfer.productDaySale_id)
-    await update_totals(destiny, transfer.productDaySale_id)
+    await update_totals(transfer.source_id, transfer.productDaySale_id)
+    await update_totals(transfer.destiny_id, transfer.productDaySale_id)
 
     return transfer
 
@@ -70,25 +63,22 @@ async def delete(id: int, user=Depends(manager)):
     if not transfer:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
 
-    source: PlaceSale = await place_sales.get(transfer.source_id)
-    destiny: PlaceSale = await place_sales.get(transfer.destiny_id)
+    sourceOld_id: int = transfer.source_id
+    destinyOld_id: int = transfer.destiny_id
+    productDaySale_id: int = transfer.productDaySale_id
     await transfer.delete()
 
-    await update_totals(source, transfer.productDaySale_id)
-    await update_totals(destiny, transfer.productDaySale_id)
+    await update_totals(sourceOld_id, productDaySale_id)
+    await update_totals(destinyOld_id, productDaySale_id)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-async def update_totals(placeSale: PlaceSale, productDaySale_id: int):
-    productPlaceSale: ProductPlaceSale = list(
-        filter(lambda productPlaceSale1: productPlaceSale1.productDaySale_id == productDaySale_id,
-               placeSale.productPlaceSales)).__getitem__(0)
-
-    productPlaceSale = await product_place_sales.get(productPlaceSale.id)
+async def update_totals(placeSale_id: int, productDaySale_id: int):
+    productPlaceSale: ProductPlaceSale = await product_place_sales.get_by_place_sale_and_product_day_sale(
+        placeSale_id, productDaySale_id)
     productPlaceSale.calculate_totals()
     await productPlaceSale.save()
-
-    placeSale: PlaceSale = await place_sales.get(placeSale.id)
+    placeSale: PlaceSale = await place_sales.get(placeSale_id)
     placeSale.calculate_totals()
     await placeSale.save()

@@ -18,20 +18,17 @@ async def get_all(user=Depends(manager)):
 @apiAdvances.post("/", response_model=AdvanceRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: AdvanceBase, user=Depends(manager)):
     advance: Advance = Advance.from_orm(schema)
+    day_sale_id: int = advance.daySale_id
+    await advance.save()
+
     if advance.placeSale_id is not None:
-        advance.daySale_id = None
-        await advance.save()
         placeSale: PlaceSale = await place_sales.get(advance.placeSale_id)
+        day_sale_id: int = placeSale.daySale_id
         placeSale.calculate_totals()
         await placeSale.save()
-        daySale: DaySale = await day_sales.get(advance.placeSale.daySale_id)
-        daySale.calculate_totals()
-        await daySale.save()
-    else:
-        await advance.save()
-        daySale: DaySale = await day_sales.get(advance.daySale_id)
-        daySale.calculate_totals()
-        await daySale.save()
+    daySale: DaySale = await day_sales.get(day_sale_id)
+    daySale.calculate_totals()
+    await daySale.save()
     return advance
 
 
@@ -51,12 +48,12 @@ async def update(id: int, schema: AdvanceUpdate, user=Depends(manager)):
     schema_data = schema.dict(exclude_unset=True)
     for key, value in schema_data.items():
         setattr(advance, key, value)
-    place_sale_id: int = advance.placeSale_id
+
     day_sale_id: int = advance.daySale_id
     await advance.save()
 
-    if place_sale_id is not None:
-        placeSale: PlaceSale = await place_sales.get(place_sale_id)
+    if advance.placeSale_id is not None:
+        placeSale: PlaceSale = await place_sales.get(advance.placeSale_id)
         day_sale_id: int = placeSale.daySale_id
         placeSale.calculate_totals()
         await placeSale.save()
@@ -72,6 +69,7 @@ async def delete(id: int, user=Depends(manager)):
     advance: Advance = await advances.get(id)
     if not advance:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
+
     place_sale_id: int = advance.placeSale_id
     day_sale_id: int = advance.daySale_id
     await advance.delete()

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status, Depends, HTTPException
 
-from controllers import place_sales, day_sales, product_place_sales, transfers, workers, motions, advances
-from models import DaySale, ProductPlaceSale, Worker, Transfer, Motion
+from controllers import place_sales, day_sales, product_place_sales, transfers, motions, advances
+from models import DaySale, ProductPlaceSale, Transfer, Motion
 from models.place_sale import PlaceSaleReadWithDetails, PlaceSaleUpdate, PlaceSale, PlaceSaleRead, PlaceSaleBase, \
     PlaceSaleReadCreateWithDetails
 from routes.sessions import manager
@@ -42,15 +42,17 @@ async def update(id: int, schema: PlaceSaleUpdate, user=Depends(manager)):
     placeSale: PlaceSale = await place_sales.get(id)
     if not placeSale:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
-    workerOld: Worker = placeSale.worker
+    workerOld_id: int = placeSale.worker_id
     schema_data = schema.dict(exclude_unset=True)
     for key, value in schema_data.items():
         setattr(placeSale, key, value)
-    workerNew: Worker = await workers.get(placeSale.worker_id)
-    if workerNew.id != workerOld.id:
-        placeSaleModify: PlaceSale = await place_sales.getByDaySaleWorker(placeSale.daySale_id, workerNew.id)
-        placeSaleModify.worker_id = workerOld.id
-        await placeSaleModify.save()
+
+    if placeSale.worker_id != workerOld_id:
+        placeSaleModify: PlaceSale = \
+            await place_sales.get_by_day_sale_and_worker(placeSale.daySale_id, placeSale.worker_id)
+        if placeSaleModify:
+            placeSaleModify.worker_id = workerOld_id
+            await placeSaleModify.save()
     return await placeSale.save()
 
 
@@ -102,12 +104,12 @@ async def delete(id: int, user=Depends(manager)):
 @apiPlaceSales.get("/worker/{id}/{start}/{end}", response_model=list[PlaceSaleReadWithDetails],
                    status_code=status.HTTP_200_OK)
 async def get_by_worker_between(id: int, start: str, end: str, user=Depends(manager)):
-    place_sales_list = await place_sales.getByWorkerBetween(id, start, end)
+    place_sales_list = await place_sales.get_by_worker_between(id, start, end)
     return place_sales_list
 
 
 @apiPlaceSales.get("/place/{id}/{start}/{end}", response_model=list[PlaceSaleReadWithDetails],
                    status_code=status.HTTP_200_OK)
 async def get_by_place_between(id: int, start: str, end: str, user=Depends(manager)):
-    place_sales_list = await place_sales.getByPlaceBetween(id, start, end)
+    place_sales_list = await place_sales.get_by_place_between(id, start, end)
     return place_sales_list

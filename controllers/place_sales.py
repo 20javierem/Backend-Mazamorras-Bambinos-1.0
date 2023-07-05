@@ -19,7 +19,7 @@ async def all():
         return session.exec(statement).unique().all()
 
 
-async def getByWorkerBetween(id: int, start: str, end: str):
+async def get_by_worker_between(id: int, start: str, end: str):
     try:
         with Session() as session:
             start: datetime = datetime.strptime(start, '%Y-%m-%d')
@@ -32,20 +32,7 @@ async def getByWorkerBetween(id: int, start: str, end: str):
         return list()
 
 
-async def getByDaySalePlaceWorker(idDaySale: int, idPlace: int, idWorker: int):
-    with Session() as session:
-        statement = select(PlaceSale).join(DaySale).join(Worker).where(Place.id == idPlace, Worker.id == idWorker,
-                                                                       DaySale.id == idDaySale)
-        return session.exec(statement).first()
-
-
-async def getByDaySaleWorker(idDaySale: int, idWorker: int):
-    with Session() as session:
-        statement = select(PlaceSale).join(DaySale).join(Worker).where(Worker.id == idWorker, DaySale.id == idDaySale)
-        return session.exec(statement).first()
-
-
-async def getByPlaceBetween(id: int, start: str, end: str):
+async def get_by_place_between(id: int, start: str, end: str):
     try:
         with Session() as session:
             start: datetime = datetime.strptime(start, '%Y-%m-%d')
@@ -56,3 +43,9 @@ async def getByPlaceBetween(id: int, start: str, end: str):
             return day_sales
     except ValueError:
         return list()
+
+
+async def get_by_day_sale_and_worker(idDaySale: int, idWorker: int):
+    with Session() as session:
+        statement = select(PlaceSale).join(DaySale).join(Worker).where(Worker.id == idWorker, DaySale.id == idDaySale)
+        return session.exec(statement).first()
