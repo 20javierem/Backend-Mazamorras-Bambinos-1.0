@@ -13,6 +13,16 @@ async def get_all(user=Depends(manager)):
     return products_day_sale_list
 
 
+@apiPlaces.post("/deletes", response_model=list[int], status_code=status.HTTP_200_OK)
+async def get_deletes(ids_places: list[int], user=Depends(manager)):
+    deletes: list[int] = list()
+    for id_place in ids_places:
+        place: PlaceReadWithType = await places.get(id_place)
+        if place is None:
+            deletes.append(id_place)
+    return deletes
+
+
 @apiPlaces.post("/", response_model=PlaceRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: PlaceBase, user=Depends(manager)):
     place: Place = Place.from_orm(schema)

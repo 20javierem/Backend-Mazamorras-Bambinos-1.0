@@ -13,6 +13,16 @@ async def get_all(user=Depends(manager)):
     return list_types_workers
 
 
+@apiTypeWorkers.post("/deletes", response_model=list[int], status_code=status.HTTP_200_OK)
+async def get_deletes(ids_type_workers: list[int], user=Depends(manager)):
+    deletes: list[int] = list()
+    for id_type_worker in ids_type_workers:
+        type_worker: TypeWorker = await types_workers.get(id_type_worker)
+        if type_worker is None:
+            deletes.append(id_type_worker)
+    return deletes
+
+
 @apiTypeWorkers.post("/", response_model=TypeWorkerRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: TypeWorkerCreate):
     type_worker: TypeWorker = TypeWorker.from_orm(schema)

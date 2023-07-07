@@ -13,6 +13,16 @@ async def get_all(user=Depends(manager)):
     return types_places_list
 
 
+@apiTypePlaces.post("/deletes", response_model=list[int], status_code=status.HTTP_200_OK)
+async def get_deletes(ids_type_places: list[int], user=Depends(manager)):
+    deletes: list[int] = list()
+    for id_type_place in ids_type_places:
+        type_place: TypePlaceRead = await type_places.get(id_type_place)
+        if type_place is None:
+            deletes.append(id_type_place)
+    return deletes
+
+
 @apiTypePlaces.post("/", response_model=TypePlaceRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: TypePlaceCreate, user=Depends(manager)):
     type_place: TypePlace = TypePlace.from_orm(schema)
