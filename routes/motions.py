@@ -15,16 +15,6 @@ async def get_all(user=Depends(manager)):
     return products_day_sale_list
 
 
-@apiMotions.post("/deletes", response_model=list[int], status_code=status.HTTP_200_OK)
-async def get_deletes(ids_motions: list[int], user=Depends(manager)):
-    deletes: list[int] = list()
-    for id_motion in ids_motions:
-        motion: Motion = await expenses.get(id_motion)
-        if motion is None:
-            deletes.append(id_motion)
-    return deletes
-
-
 @apiMotions.post("/", response_model=MotionRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: MotionBase, user=Depends(manager)):
     motion: Motion = Motion.from_orm(schema)

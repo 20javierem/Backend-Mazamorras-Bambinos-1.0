@@ -22,7 +22,7 @@ class Advance(Moreno, AdvanceBase, table=True):
     created: Optional[datetime] = Field(default=datetime.now(), nullable=False)
     updated: Optional[datetime] = Field(default=datetime.now(), nullable=False,
                                         sa_column_kwargs={"onupdate": datetime.now})
-
+    deleted: bool = Field(default=False)
     daySale: Optional["DaySale"] = Relationship(back_populates="advances", sa_relationship_kwargs={"lazy": "subquery"})
     placeSale: Optional["PlaceSale"] = Relationship(back_populates="advances",
                                                     sa_relationship_kwargs={"lazy": "subquery"})
@@ -31,6 +31,7 @@ class Advance(Moreno, AdvanceBase, table=True):
 
 class AdvanceRead(AdvanceBase):
     id: int
+    deleted: bool
 
 
 class AdvanceReadWithDetails(AdvanceRead):

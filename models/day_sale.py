@@ -27,14 +27,23 @@ class DaySale(Moreno, SQLModel, table=True):
     created: Optional[datetime] = Field(default=datetime.now(), nullable=False)
     updated: Optional[datetime] = Field(default=datetime.now(), nullable=False,
                                         sa_column_kwargs={"onupdate": datetime.now})
-
-    placeSales: list["PlaceSale"] = Relationship(back_populates="daySale",
-                                                 sa_relationship_kwargs={"lazy": "subquery",
-                                                                         "order_by": "desc(PlaceSale.totalSale)"})
-    productDaySales: list["ProductDaySale"] = Relationship(back_populates="daySale",
-                                                           sa_relationship_kwargs={"lazy": "subquery"})
-    advances: list["Advance"] = Relationship(back_populates="daySale", sa_relationship_kwargs={"lazy": "subquery"})
-    motions: list["Motion"] = Relationship(back_populates="daySale", sa_relationship_kwargs={"lazy": "subquery"})
+    placeSales: list["PlaceSale"] = Relationship(
+        back_populates="daySale",
+        sa_relationship_kwargs={"lazy": "subquery",
+                                "primaryjoin": "PlaceSale.deleted==False",
+                                "order_by": "desc(PlaceSale.totalSale)"})
+    productDaySales: list["ProductDaySale"] = Relationship(
+        back_populates="daySale",
+        sa_relationship_kwargs={"lazy": "subquery",
+                                "primaryjoin": "ProductDaySale.deleted==False"})
+    advances: list["Advance"] = Relationship(
+        back_populates="daySale",
+        sa_relationship_kwargs={"lazy": "subquery",
+                                "primaryjoin": "Advance.deleted==False"})
+    motions: list["Motion"] = Relationship(
+        back_populates="daySale",
+        sa_relationship_kwargs={"lazy": "subquery",
+                                "primaryjoin": "Motion.deleted==False"})
 
     def calculate_totals(self):
         self.totalSale = 0.0

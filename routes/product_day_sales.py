@@ -16,16 +16,6 @@ async def get_all(user=Depends(manager)):
     return products_day_sale_list
 
 
-@apiProductDaySales.post("/deletes", response_model=list[int], status_code=status.HTTP_200_OK)
-async def get_deletes(ids_products_day_sales: list[int], user=Depends(manager)):
-    deletes: list[int] = list()
-    for id_product_day_sale in ids_products_day_sales:
-        product_day_sale: ProductDaySale = await product_day_sales.get(id_product_day_sale)
-        if product_day_sale is None:
-            deletes.append(id_product_day_sale)
-    return deletes
-
-
 @apiProductDaySales.post("/", response_model=ProductDaySaleReadCreate, status_code=status.HTTP_201_CREATED)
 async def create(schema: ProductDaySaleBase, user=Depends(manager)):
     productDaySale: ProductDaySale = ProductDaySale.from_orm(schema)

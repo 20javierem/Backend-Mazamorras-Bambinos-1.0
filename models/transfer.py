@@ -18,6 +18,7 @@ class Transfer(Moreno, SQLModel, table=True):
     created: Optional[datetime] = Field(default=datetime.now(), nullable=False)
     updated: Optional[datetime] = Field(default=datetime.now(), nullable=False,
                                         sa_column_kwargs={"onupdate": datetime.now})
+    deleted: bool = Field(default=False)
     quantity: int = Field(default=0)
     source_id: int = Field(default=None, foreign_key="place_sale_tbl.id")
     destiny_id: int = Field(default=None, foreign_key="place_sale_tbl.id")
@@ -36,6 +37,7 @@ class TransferRead(SQLModel):
     destiny_id: int
     productDaySale_id: int
     quantity: int
+    deleted: bool
 
 
 class TransferUpdate(SQLModel):

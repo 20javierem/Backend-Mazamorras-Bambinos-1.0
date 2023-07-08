@@ -12,6 +12,7 @@ class ProductPlaceSale(Moreno, SQLModel, table=True):
     created: Optional[datetime] = Field(default=datetime.now(), nullable=False)
     updated: Optional[datetime] = Field(default=datetime.now(), nullable=False,
                                         sa_column_kwargs={"onupdate": datetime.now})
+    deleted: bool = Field(default=False)
     quantityInitial: float = Field(default=0)
     quantityRest: float = Field(default=0)
     quantitySold: float = Field(default=0)
@@ -41,6 +42,7 @@ class ProductPlaceSale(Moreno, SQLModel, table=True):
 
 class ProductPlaceSaleRead(SQLModel):
     id: int
+    deleted: bool
     quantityInitial: float
     quantityRest: float
     quantitySold: float

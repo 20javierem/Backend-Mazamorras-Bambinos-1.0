@@ -44,6 +44,7 @@ class PlaceSale(Moreno, PlaceSaleBase, table=True):
     created: Optional[datetime] = Field(default=datetime.now(), nullable=False)
     updated: Optional[datetime] = Field(default=datetime.now(), nullable=False,
                                         sa_column_kwargs={"onupdate": datetime.now})
+    deleted: bool = Field(default=False)
     totalSale: float = Field(default=0.0)
     totalMotions: float = Field(default=0.0)
     totalAdvances: float = Field(default=0.0)
@@ -87,6 +88,7 @@ class PlaceSale(Moreno, PlaceSaleBase, table=True):
 
 class PlaceSaleRead(PlaceSaleBase):
     id: int
+    deleted: bool
     totalSale: float
     totalMotions: float
     totalAdvances: float

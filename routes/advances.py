@@ -15,16 +15,6 @@ async def get_all(user=Depends(manager)):
     return day_sales_list
 
 
-@apiAdvances.post("/deletes", response_model=list[int], status_code=status.HTTP_200_OK)
-async def get_deletes(ids_advances: list[int], user=Depends(manager)):
-    deletes: list[int] = list()
-    for id_advance in ids_advances:
-        advance: Advance = await advances.get(id_advance)
-        if advance is None:
-            deletes.append(id_advance)
-    return deletes
-
-
 @apiAdvances.post("/", response_model=AdvanceRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: AdvanceBase, user=Depends(manager)):
     advance: Advance = Advance.from_orm(schema)

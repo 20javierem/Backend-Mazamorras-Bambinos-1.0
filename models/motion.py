@@ -21,7 +21,7 @@ class Motion(Moreno, MotionBase, table=True):
     created: Optional[datetime] = Field(default=datetime.now(), nullable=False)
     updated: Optional[datetime] = Field(default=datetime.now(), nullable=False,
                                         sa_column_kwargs={"onupdate": datetime.now})
-
+    deleted: bool = Field(default=False)
     daySale: Optional["DaySale"] = Relationship(back_populates="motions", sa_relationship_kwargs={"lazy": "subquery"})
     placeSale: Optional["PlaceSale"] = Relationship(back_populates="motions",
                                                     sa_relationship_kwargs={"lazy": "subquery"})
@@ -29,6 +29,7 @@ class Motion(Moreno, MotionBase, table=True):
 
 class MotionRead(MotionBase):
     id: int
+    deleted: bool
 
 
 class MotionWithDetails(MotionRead):

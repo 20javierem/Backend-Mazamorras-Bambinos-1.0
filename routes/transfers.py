@@ -15,16 +15,6 @@ async def get_all(user=Depends(manager)):
     return transfers_list
 
 
-@apiTransfers.post("/deletes", response_model=list[int], status_code=status.HTTP_200_OK)
-async def get_deletes(ids_transfers: list[int], user=Depends(manager)):
-    deletes: list[int] = list()
-    for id_transfer in ids_transfers:
-        transfer: Transfer = await transfers.get(id_transfer)
-        if transfer is None:
-            deletes.append(id_transfer)
-    return deletes
-
-
 @apiTransfers.post("/", response_model=TransferRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: TransferBase, user=Depends(manager)):
     transfer: Transfer = Transfer.from_orm(schema)
@@ -76,7 +66,7 @@ async def delete(id: int, user=Depends(manager)):
     sourceOld_id: int = transfer.source_id
     destinyOld_id: int = transfer.destiny_id
     productDaySale_id: int = transfer.productDaySale_id
-    await transfer.delete()
+    transfer.deleted = True
 
     await update_totals(sourceOld_id, productDaySale_id)
     await update_totals(destinyOld_id, productDaySale_id)

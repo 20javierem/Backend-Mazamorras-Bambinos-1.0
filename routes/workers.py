@@ -20,16 +20,6 @@ async def create(schema: WorkerBase):
     return worker
 
 
-@apiWorkers.post("/deletes", response_model=list[int], status_code=status.HTTP_200_OK)
-async def get_deletes(ids_workers: list[int], user=Depends(manager)):
-    deletes: list[int] = list()
-    for id_worker in ids_workers:
-        worker: WorkerReadWithType = await workers.get(id_worker)
-        if worker is None:
-            deletes.append(id_worker)
-    return deletes
-
-
 @apiWorkers.get("/{id}", response_model=WorkerReadWithType, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
     worker: WorkerReadWithType = await workers.get(id)

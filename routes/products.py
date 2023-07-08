@@ -13,16 +13,6 @@ async def get_all(user=Depends(manager)):
     return places_list
 
 
-@apiProducts.post("/deletes", response_model=list[int], status_code=status.HTTP_200_OK)
-async def get_deletes(ids_products: list[int], user=Depends(manager)):
-    deletes: list[int] = list()
-    for id_product in ids_products:
-        product: ProductRead = await products.get(id_product)
-        if product is None:
-            deletes.append(id_product)
-    return deletes
-
-
 @apiProducts.post("/", response_model=ProductRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: ProductCreate, user=Depends(manager)):
     product: Product = Product.from_orm(schema)
