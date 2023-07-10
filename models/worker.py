@@ -31,10 +31,10 @@ class Worker(Moreno, WorkerBase, table=True):
                                         sa_column_kwargs={"onupdate": datetime.now})
     typeWorker: Optional["TypeWorker"] = Relationship(sa_relationship_kwargs={"lazy": "joined"})
 
-    async def save(self):
+    def save(self):
         if self.password is None:
             self.password = encrypt(self.dni)
-        return await super().save()
+        return super().save()
 
 
 class WorkerRead(WorkerBase):

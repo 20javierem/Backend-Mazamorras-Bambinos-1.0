@@ -30,20 +30,16 @@ class DaySale(Moreno, SQLModel, table=True):
     placeSales: list["PlaceSale"] = Relationship(
         back_populates="daySale",
         sa_relationship_kwargs={"lazy": "subquery",
-                                "primaryjoin": "PlaceSale.deleted==False",
                                 "order_by": "desc(PlaceSale.totalSale)"})
     productDaySales: list["ProductDaySale"] = Relationship(
         back_populates="daySale",
-        sa_relationship_kwargs={"lazy": "subquery",
-                                "primaryjoin": "ProductDaySale.deleted==False"})
+        sa_relationship_kwargs={"lazy": "subquery"})
     advances: list["Advance"] = Relationship(
         back_populates="daySale",
-        sa_relationship_kwargs={"lazy": "subquery",
-                                "primaryjoin": "Advance.deleted==False"})
+        sa_relationship_kwargs={"lazy": "subquery"})
     motions: list["Motion"] = Relationship(
         back_populates="daySale",
-        sa_relationship_kwargs={"lazy": "subquery",
-                                "primaryjoin": "Motion.deleted==False"})
+        sa_relationship_kwargs={"lazy": "subquery"})
 
     def calculate_totals(self):
         self.totalSale = 0.0

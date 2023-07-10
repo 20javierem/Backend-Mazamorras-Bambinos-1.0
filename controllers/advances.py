@@ -4,12 +4,12 @@ from config.moreno import Session
 from models.advance import Advance
 
 
-async def get(id: int):
+def get(id: int):
     with Session() as session:
         return session.get(Advance, id)
 
 
-async def all():
+def all():
     with Session() as session:
         statement = select(Advance)
         return session.exec(statement).all()

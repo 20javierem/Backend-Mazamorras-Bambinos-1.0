@@ -6,19 +6,19 @@ from config.moreno import Session
 from models.day_sale import DaySale
 
 
-async def get(id: int):
+def get(id: int):
     with Session() as session:
         daySale = session.get(DaySale, id)
         return daySale
 
 
-async def get_all():
+def get_all():
     with Session() as session:
         statement = select(DaySale)
         return session.exec(statement).unique().all()
 
 
-async def get_of_date(date: str):
+def get_of_date(date: str):
     try:
         with Session() as session:
             date: datetime = datetime.strptime(date, '%Y-%m-%d')
@@ -29,7 +29,7 @@ async def get_of_date(date: str):
         return None
 
 
-async def get_by_range_of_date(start: str, end: str):
+def get_by_range_of_date(start: str, end: str):
     try:
         with Session() as session:
             start: datetime = datetime.strptime(start, '%Y-%m-%d')

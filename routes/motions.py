@@ -11,7 +11,7 @@ apiMotions = APIRouter()
 
 @apiMotions.get("/", response_model=list[MotionRead], status_code=status.HTTP_200_OK)
 async def get_all(user=Depends(manager)):
-    products_day_sale_list: list[MotionRead] = await expenses.all()
+    products_day_sale_list: list[MotionRead] = expenses.all()
     return products_day_sale_list
 
 
@@ -20,24 +20,24 @@ async def create(schema: MotionBase, user=Depends(manager)):
     motion: Motion = Motion.from_orm(schema)
     if motion.placeSale_id is not None:
         motion.daySale_id = None
-        await motion.save()
-        placeSale: PlaceSale = await place_sales.get(motion.placeSale_id)
+        motion.save()
+        placeSale: PlaceSale = place_sales.get(motion.placeSale_id)
         placeSale.calculate_totals()
-        await placeSale.save()
-        daySale: DaySale = await day_sales.get(motion.placeSale.daySale_id)
+        placeSale.save()
+        daySale: DaySale = day_sales.get(motion.placeSale.daySale_id)
         daySale.calculate_totals()
-        await daySale.save()
+        daySale.save()
     else:
-        await motion.save()
-        daySale: DaySale = await day_sales.get(motion.daySale_id)
+        motion.save()
+        daySale: DaySale = day_sales.get(motion.daySale_id)
         daySale.calculate_totals()
-        await daySale.save()
+        daySale.save()
     return motion
 
 
 @apiMotions.get("/{id}", response_model=MotionRead, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
-    motion: MotionRead = await expenses.get(id)
+    motion: MotionRead = expenses.get(id)
     if motion is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     return motion
@@ -45,7 +45,7 @@ async def get(id: int, user=Depends(manager)):
 
 @apiMotions.patch('/{id}', response_model=Motion, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: MotionUpdate, user=Depends(manager)):
-    motion: Motion = await expenses.get(id)
+    motion: Motion = expenses.get(id)
     if not motion:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     schema_data = schema.dict(exclude_unset=True)
@@ -53,36 +53,38 @@ async def update(id: int, schema: MotionUpdate, user=Depends(manager)):
         setattr(motion, key, value)
     place_sale_id: int = motion.placeSale_id
     day_sale_id: int = motion.daySale_id
-    await motion.save()
+    motion.save()
 
     if place_sale_id is not None:
-        placeSale: PlaceSale = await place_sales.get(place_sale_id)
+        placeSale: PlaceSale = place_sales.get(place_sale_id)
         day_sale_id: int = placeSale.daySale_id
         placeSale.calculate_totals()
-        await placeSale.save()
-    daySale: DaySale = await day_sales.get(day_sale_id)
+        placeSale.save()
+    daySale: DaySale = day_sales.get(day_sale_id)
     daySale.calculate_totals()
-    await daySale.save()
+    daySale.save()
 
     return motion
 
 
 @apiMotions.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
-    motion: Motion = await expenses.get(id)
+    motion: Motion = expenses.get(id)
     if not motion:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     place_sale_id: int = motion.placeSale_id
     day_sale_id: int = motion.daySale_id
-    await motion.delete()
+    motion.amount = 0.0
+    motion.deleted = True
+    motion.save()
 
     if place_sale_id is not None:
-        placeSale: PlaceSale = await place_sales.get(place_sale_id)
+        placeSale: PlaceSale = place_sales.get(place_sale_id)
         day_sale_id: int = placeSale.daySale_id
         placeSale.calculate_totals()
-        await placeSale.save()
-    daySale: DaySale = await day_sales.get(day_sale_id)
+        placeSale.save()
+    daySale: DaySale = day_sales.get(day_sale_id)
     daySale.calculate_totals()
-    await daySale.save()
+    daySale.save()
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

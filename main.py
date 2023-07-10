@@ -1,7 +1,10 @@
 import uvicorn
+from datetime import datetime
 from fastapi import FastAPI
 
 from config.db import create_db_and_tables
+from controllers import workers, type_workers
+from models import TypeWorker, Worker
 from routes.advances import apiAdvances
 from routes.day_sales import apiDaySales
 from routes.motions import apiMotions
@@ -16,13 +19,18 @@ from routes.transfers import apiTransfers
 from routes.type_places import apiTypePlaces
 from routes.type_workers import apiTypeWorkers
 from routes.workers import apiWorkers
+
 create_db_and_tables()
 app = FastAPI()
 
 
+# para filtrar por atributo on relation_Ship
+# "primaryjoin": "Motion.deleted==False"
+
 @app.get("/")
 async def root():
     return "bienvenido"
+
 
 app.include_router(apiTypePlaces, prefix="/type-place")
 app.include_router(apiTypeWorkers, prefix="/type-worker")
@@ -39,10 +47,31 @@ app.include_router(apiMessageSales, prefix="/message")
 app.include_router(apiProducts, prefix="/product")
 app.include_router(apiSession)
 
-if __name__ == "__main__":
+
+def main():
     create_db_and_tables()
-    uvicorn.run(app, host="localhost", port=8000)
+
+    if len(type_workers.all()) == 0:
+        typeWorker: TypeWorker = TypeWorker()
+        typeWorker.description = "VENDEDOR"
+        typeWorker.save()
+
+    if len(workers.all()) == 0:
+        worker: Worker = Worker()
+        worker.typeWorker_id = 1
+        worker.dni = "62020554"
+        worker.admin = True
+        worker.names = "JAVIER ERNESTO"
+        worker.lastNames = "MORENO LLOCLLE"
+        worker.phone = "940029541"
+        worker.salary = 1200.0
+        worker.sex = "MASCULINO"
+        worker.start = datetime.now()
+        worker.birthday = datetime.now()
+        worker.save()
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
-
-
+if __name__ == "__main__":
+    main()

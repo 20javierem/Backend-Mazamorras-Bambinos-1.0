@@ -11,7 +11,7 @@ apiAdvances = APIRouter()
 
 @apiAdvances.get("/", response_model=list[AdvanceReadWithDetails], status_code=status.HTTP_200_OK)
 async def get_all(user=Depends(manager)):
-    day_sales_list = await advances.all()
+    day_sales_list = advances.all()
     return day_sales_list
 
 
@@ -19,22 +19,22 @@ async def get_all(user=Depends(manager)):
 async def create(schema: AdvanceBase, user=Depends(manager)):
     advance: Advance = Advance.from_orm(schema)
     day_sale_id: int = advance.daySale_id
-    await advance.save()
+    advance.save()
 
     if advance.placeSale_id is not None:
-        placeSale: PlaceSale = await place_sales.get(advance.placeSale_id)
+        placeSale: PlaceSale = place_sales.get(advance.placeSale_id)
         day_sale_id: int = placeSale.daySale_id
         placeSale.calculate_totals()
-        await placeSale.save()
-    daySale: DaySale = await day_sales.get(day_sale_id)
+        placeSale.save()
+    daySale: DaySale = day_sales.get(day_sale_id)
     daySale.calculate_totals()
-    await daySale.save()
+    daySale.save()
     return advance
 
 
 @apiAdvances.get("/{id}", response_model=AdvanceReadWithDetails, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
-    advance: AdvanceReadWithDetails = await advances.get(id)
+    advance: AdvanceReadWithDetails = advances.get(id)
     if advance is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     return advance
@@ -42,7 +42,7 @@ async def get(id: int, user=Depends(manager)):
 
 @apiAdvances.patch('/{id}', response_model=AdvanceRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: AdvanceUpdate, user=Depends(manager)):
-    advance: Advance = await advances.get(id)
+    advance: Advance = advances.get(id)
     if not advance:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     schema_data = schema.dict(exclude_unset=True)
@@ -50,37 +50,39 @@ async def update(id: int, schema: AdvanceUpdate, user=Depends(manager)):
         setattr(advance, key, value)
 
     day_sale_id: int = advance.daySale_id
-    await advance.save()
+    advance.save()
 
     if advance.placeSale_id is not None:
-        placeSale: PlaceSale = await place_sales.get(advance.placeSale_id)
+        placeSale: PlaceSale = place_sales.get(advance.placeSale_id)
         day_sale_id: int = placeSale.daySale_id
         placeSale.calculate_totals()
-        await placeSale.save()
-    daySale: DaySale = await day_sales.get(day_sale_id)
+        placeSale.save()
+    daySale: DaySale = day_sales.get(day_sale_id)
     daySale.calculate_totals()
-    await daySale.save()
+    daySale.save()
 
     return advance
 
 
 @apiAdvances.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
-    advance: Advance = await advances.get(id)
+    advance: Advance = advances.get(id)
     if not advance:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
 
     place_sale_id: int = advance.placeSale_id
     day_sale_id: int = advance.daySale_id
-    await advance.delete()
+    advance.amount = 0.0
+    advance.deleted = True
+    advance.save()
 
     if place_sale_id is not None:
-        placeSale: PlaceSale = await place_sales.get(place_sale_id)
+        placeSale: PlaceSale = place_sales.get(place_sale_id)
         day_sale_id: int = placeSale.daySale_id
         placeSale.calculate_totals()
-        await placeSale.save()
-    daySale: DaySale = await day_sales.get(day_sale_id)
+        placeSale.save()
+    daySale: DaySale = day_sales.get(day_sale_id)
     daySale.calculate_totals()
-    await daySale.save()
+    daySale.save()
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -4,12 +4,12 @@ from config.moreno import Session
 from models.product_day_sale import ProductDaySale
 
 
-async def get(id: int):
+def get(id: int):
     with Session() as session:
         return session.get(ProductDaySale, id)
 
 
-async def all():
+def all():
     with Session() as session:
         statement = select(ProductDaySale)
         return session.exec(statement).all()

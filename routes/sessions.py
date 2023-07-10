@@ -16,8 +16,8 @@ apiSession = APIRouter()
 
 
 @manager.user_loader()
-async def get_user(username: str):
-    worker: WorkerReadWithType = await workers.getByDni(username)
+def get_user(username: str):
+    worker: WorkerReadWithType = workers.getByDni(username)
     return worker
 
 
@@ -25,8 +25,8 @@ def verify_password(plain_password, hashed_password):
     return decrypt(hashed_password).__eq__(plain_password)
 
 
-async def authenticate_user(username: str, password: str):
-    user: WorkerReadWithType = await get_user(username)
+def authenticate_user(username: str, password: str):
+    user: WorkerReadWithType = get_user(username)
     if not user:
         return None
     if not verify_password(password, user.password):
@@ -41,7 +41,7 @@ async def login(data: OAuth2PasswordRequestForm = Depends()):
     if data.username.__contains__('\"'):
         dni = eval(data.username)
         password = eval(data.password)
-    user: WorkerReadWithType = await authenticate_user(dni, password)
+    user: WorkerReadWithType = authenticate_user(dni, password)
     if not user:
         raise InvalidCredentialsException
     access_token = manager.create_access_token(data={'sub': dni})

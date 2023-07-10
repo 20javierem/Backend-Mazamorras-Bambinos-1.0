@@ -11,36 +11,36 @@ apiProductPlaceSales = APIRouter()
 
 @apiProductPlaceSales.get("/", response_model=list[ProductPlaceSale], status_code=status.HTTP_200_OK)
 async def get_all(user=Depends(manager)):
-    products_place_sale_list: list[ProductPlaceSale] = await product_place_sales.all()
+    products_place_sale_list: list[ProductPlaceSale] = product_place_sales.all()
     return products_place_sale_list
 
 
 @apiProductPlaceSales.post("/", response_model=ProductPlaceSaleReadDaySaleCreate, status_code=status.HTTP_201_CREATED)
 async def create(schema: ProductPlaceSaleCreate, user=Depends(manager)):
     product_place_sale: ProductPlaceSale = ProductPlaceSale.from_orm(schema)
-    await product_place_sale.save()
+    product_place_sale.save()
 
     product_place_sale.calculate_totals()
-    await product_place_sale.save()
+    product_place_sale.save()
 
-    placeSale = await place_sales.get(product_place_sale.placeSale_id)
+    placeSale = place_sales.get(product_place_sale.placeSale_id)
     placeSale.calculate_totals()
-    await placeSale.save()
+    placeSale.save()
 
-    productDaySale = await product_day_sales.get(product_place_sale.productDaySale_id)
+    productDaySale = product_day_sales.get(product_place_sale.productDaySale_id)
     productDaySale.calculate_totals()
-    await productDaySale.save()
+    productDaySale.save()
 
-    daySale = await day_sales.get(product_place_sale.productDaySale.daySale_id)
+    daySale = day_sales.get(product_place_sale.productDaySale.daySale_id)
     daySale.calculate_totals()
-    await daySale.save()
+    daySale.save()
 
     return product_place_sale
 
 
 @apiProductPlaceSales.get("/{id}", response_model=ProductPlaceSale, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
-    product_place_sale: ProductPlaceSale = await product_place_sales.get(id)
+    product_place_sale: ProductPlaceSale = product_place_sales.get(id)
     if product_place_sale is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     return product_place_sale
@@ -48,7 +48,7 @@ async def get(id: int, user=Depends(manager)):
 
 @apiProductPlaceSales.patch('/{id}', response_model=ProductPlaceSaleRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: ProductPlaceSaleUpdate, user=Depends(manager)):
-    product_place_sale: ProductPlaceSale = await product_place_sales.get(id)
+    product_place_sale: ProductPlaceSale = product_place_sales.get(id)
     if not product_place_sale:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     schema_data = schema.dict(exclude_unset=True)
@@ -56,27 +56,18 @@ async def update(id: int, schema: ProductPlaceSaleUpdate, user=Depends(manager))
         setattr(product_place_sale, key, value)
 
     product_place_sale.calculate_totals()
-    await product_place_sale.save()
+    product_place_sale.save()
 
-    placeSale = await place_sales.get(product_place_sale.placeSale_id)
+    placeSale = place_sales.get(product_place_sale.placeSale_id)
     placeSale.calculate_totals()
-    await placeSale.save()
+    placeSale.save()
 
-    productDaySale = await product_day_sales.get(product_place_sale.productDaySale_id)
+    productDaySale = product_day_sales.get(product_place_sale.productDaySale_id)
     productDaySale.calculate_totals()
-    await productDaySale.save()
+    productDaySale.save()
 
-    daySale = await day_sales.get(product_place_sale.productDaySale.daySale_id)
+    daySale = day_sales.get(product_place_sale.productDaySale.daySale_id)
     daySale.calculate_totals()
-    await daySale.save()
+    daySale.save()
 
     return product_place_sale
-
-
-@apiProductPlaceSales.delete('/{id}')
-async def delete(id: int, user=Depends(manager)):
-    product_place_sale: ProductPlaceSale = await product_place_sales.get(id)
-    if not product_place_sale:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
-    await product_place_sale.delete()
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
