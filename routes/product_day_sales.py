@@ -22,7 +22,7 @@ async def create(schema: ProductDaySaleBase, user=Depends(manager)):
     productDaySale = productDaySale.save()  # idProductDaySale
 
     for placeSale in productDaySale.daySale.placeSales:
-        await (ProductPlaceSale(
+        (ProductPlaceSale(
             productDaySale_id=productDaySale.id,
             placeSale_id=placeSale.id)
         ).save()  # idProductPlaceSale

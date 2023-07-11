@@ -34,7 +34,7 @@ async def create(schema: DaySaleBase, user=Depends(manager)):
         placeSale.daySale_id = daySale.id
         placeSale = placeSale.save()  # idPlaceSale
         for productDaySale in daySale.productDaySales:
-            await (ProductPlaceSale(
+            (ProductPlaceSale(
                 productDaySale_id=productDaySale.id,
                 placeSale_id=placeSale.id)
             ).save()  # idProductPlaceSale
@@ -61,6 +61,7 @@ async def update(id: int, schema: DaySaleUpdate, user=Depends(manager)):
         setattr(day_sale, key, value)
     day_sale.save()
     return day_sale
+
 
 @apiDaySales.get("/date/{date}", response_model=DaySaleReadWithDetails, status_code=status.HTTP_200_OK)
 async def get_by_date(date: str, user=Depends(manager)):
