@@ -77,8 +77,8 @@ class DaySaleRead(SQLModel):
 
 class DaySaleReadCreate(SQLModel):
     id: int
-    placeSales: list["PlaceSaleRead"] = []
-    productDaySales: list["ProductDaySaleReadCreate"] = []
+    placeSales: list["PlaceSaleReadCreateWithDetails"] = []
+    productDaySales: list["ProductDaySaleRead"] = []
 
 
 class DaySaleReadWithDetails(DaySaleRead):

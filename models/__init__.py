@@ -42,8 +42,8 @@ PlaceSaleReadWithDetails.update_forward_refs(WorkerRead=WorkerRead, PlaceRead=Pl
 PlaceSaleCreateWithDetails.update_forward_refs(ProductPlaceSaleCreate=ProductPlaceSaleCreate, TransferBase=TransferBase,
                                                AdvanceBase=AdvanceBase, MotionBase=MotionBase)
 
-DaySaleReadCreate.update_forward_refs(PlaceSaleRead=PlaceSaleRead,
-                                      ProductDaySaleReadCreate=ProductDaySaleReadCreate)
+DaySaleReadCreate.update_forward_refs(PlaceSaleReadCreateWithDetails=PlaceSaleReadCreateWithDetails,
+                                      ProductDaySaleRead=ProductDaySaleRead)
 
 DaySale.update_forward_refs(PlaceSale=PlaceSale, ProductDaySale=ProductDaySale, Advance=Advance, Motion=Motion)
 

@@ -39,7 +39,7 @@ async def create(schema: DaySaleBase, user=Depends(manager)):
                 placeSale_id=placeSale.id)
             ).save()  # idProductPlaceSale
 
-    daySale = day_sales.get(daySale.id)
+    daySale: DaySaleReadCreate = day_sales.get(daySale.id)
     return daySale
 
 
