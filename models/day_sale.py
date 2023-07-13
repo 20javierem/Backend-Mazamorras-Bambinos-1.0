@@ -20,6 +20,7 @@ class DaySale(Moreno, SQLModel, table=True):
     __tablename__ = 'day_sale_tbl'
     id: Optional[int] = Field(default=None, primary_key=True)
     date: Date = Field(unique=True, nullable=False)
+    quantitySold: int = Field(default=0)
     totalSale: float = Field(default=0.0)
     totalAdvances: float = Field(default=0.0)
     totalMotions: float = Field(default=0.0)
@@ -42,11 +43,13 @@ class DaySale(Moreno, SQLModel, table=True):
         sa_relationship_kwargs={"lazy": "subquery"})
 
     def calculate_totals(self):
+        self.quantitySold = 0
         self.totalSale = 0.0
         self.totalAdvances = 0.0
         self.totalMotions = 0.0
 
         for placeSale in self.placeSales:
+            self.quantitySold += placeSale.quantitySold
             self.totalSale += placeSale.totalSale
             self.totalAdvances += placeSale.totalAdvances
             self.totalMotions += placeSale.totalMotions
@@ -65,6 +68,7 @@ class DaySale(Moreno, SQLModel, table=True):
 class DaySaleRead(SQLModel):
     id: int
     date: Date
+    quantitySold: int
     totalSale: float
     totalAdvances: float
     totalMotions: float

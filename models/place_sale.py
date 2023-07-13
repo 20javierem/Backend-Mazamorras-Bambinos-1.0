@@ -45,6 +45,7 @@ class PlaceSale(Moreno, PlaceSaleBase, table=True):
     updated: Optional[datetime] = Field(default=datetime.now(), nullable=False,
                                         sa_column_kwargs={"onupdate": datetime.now})
     deleted: bool = Field(default=False)
+    quantitySold: int = Field(default=0)
     totalSale: float = Field(default=0.0)
     totalMotions: float = Field(default=0.0)
     totalAdvances: float = Field(default=0.0)
@@ -68,11 +69,13 @@ class PlaceSale(Moreno, PlaceSaleBase, table=True):
                                                                sa_relationship_kwargs={"lazy": "subquery"})
 
     def calculate_totals(self):
+        self.quantitySold = 0
         self.totalSale = 0.0
         self.totalAdvances = 0.0
         self.totalMotions = 0.0
 
         for productPlaceSale in self.productPlaceSales:
+            self.quantitySold += productPlaceSale.quantitySold
             self.totalSale += productPlaceSale.totalSale
 
         for advance in self.advances:
@@ -89,6 +92,7 @@ class PlaceSale(Moreno, PlaceSaleBase, table=True):
 class PlaceSaleRead(PlaceSaleBase):
     id: int
     deleted: bool
+    quantitySold: int
     totalSale: float
     totalMotions: float
     totalAdvances: float
