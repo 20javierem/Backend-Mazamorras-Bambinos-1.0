@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from sqlalchemy import asc
 from sqlmodel import select
 
 from config.moreno import Session
@@ -14,7 +15,7 @@ def get(id: int):
 
 def get_all():
     with Session() as session:
-        statement = select(DaySale)
+        statement = select(DaySale).order_by(asc(DaySale.date))
         return session.exec(statement).unique().all()
 
 
@@ -34,7 +35,8 @@ def get_by_range_of_date(start: str, end: str):
         with Session() as session:
             start: datetime = datetime.strptime(start, '%Y-%m-%d')
             end: datetime = datetime.strptime(end, '%Y-%m-%d')
-            statement = select(DaySale).where(DaySale.date >= start.date(), DaySale.date <= end.date())
+            statement = select(DaySale).where(DaySale.date >= start.date(), DaySale.date <= end.date()).order_by(
+                asc(DaySale.date))
             day_sales = session.exec(statement).all()
             return day_sales
     except ValueError:
