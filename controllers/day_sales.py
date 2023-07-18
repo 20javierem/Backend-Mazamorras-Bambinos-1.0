@@ -13,12 +13,6 @@ def get(id: int):
         return daySale
 
 
-def get_all():
-    with Session() as session:
-        statement = select(DaySale).order_by(asc(DaySale.date))
-        return session.exec(statement).unique().all()
-
-
 def get_of_date(date: str):
     try:
         with Session() as session:

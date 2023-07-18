@@ -30,6 +30,11 @@ class Transfer(Moreno, SQLModel, table=True):
     destiny: Optional["PlaceSale"] = Relationship(
         sa_relationship_kwargs={"primaryjoin": "Transfer.destiny_id==PlaceSale.id", "lazy": "subquery"})
 
+    def delete(self):
+        self.quantity = 0
+        self.deleted = True
+        self.save()
+
 
 class TransferRead(SQLModel):
     id: int

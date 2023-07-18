@@ -5,28 +5,24 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_login import LoginManager
 from fastapi_login.exceptions import InvalidCredentialsException
 
-import controllers.workers as workers
-from config.encryption import decrypt
-from models.worker import WorkerReadWithType
+from config.encryption import verify_password
+from controllers import users
+from models.user import User, UserRead
 
-SECRET = "ae0a9c1be3af1ad21bdf328547068c14557527eada6e63e0"
-manager = LoginManager(SECRET, '/login', default_expiry=timedelta(hours=12))
+SECRET: str = "ae0a9c1be3af1ad21bdf328547068c14557527eada6e63e0"
+manager: LoginManager = LoginManager(SECRET, '/login', default_expiry=timedelta(hours=12))
 
-apiSession = APIRouter()
+apiSession: APIRouter = APIRouter()
 
 
 @manager.user_loader()
 def get_user(username: str):
-    worker: WorkerReadWithType = workers.getByDni(username)
-    return worker
-
-
-def verify_password(plain_password, hashed_password):
-    return decrypt(hashed_password).__eq__(plain_password)
+    user: User = users.getByUsername(username)
+    return user
 
 
 def authenticate_user(username: str, password: str):
-    user: WorkerReadWithType = get_user(username)
+    user: User = get_user(username)
     if not user:
         return None
     if not verify_password(password, user.password):
@@ -36,13 +32,13 @@ def authenticate_user(username: str, password: str):
 
 @apiSession.post('/login')
 async def login(data: OAuth2PasswordRequestForm = Depends()):
-    dni = data.username
-    password = data.password
+    username: str = data.username
+    password: str = data.password
     if data.username.__contains__('\"'):
-        dni = eval(data.username)
+        username = eval(data.username)
         password = eval(data.password)
-    user: WorkerReadWithType = authenticate_user(dni, password)
+    user: User = authenticate_user(username, password)
     if not user:
         raise InvalidCredentialsException
-    access_token = manager.create_access_token(data={'sub': dni})
-    return {'access_token': access_token, 'worker': WorkerReadWithType.from_orm(user)}
+    access_token: str = manager.create_access_token(data={'sub': username})
+    return {'access_token': access_token, 'user': UserRead.from_orm(user)}

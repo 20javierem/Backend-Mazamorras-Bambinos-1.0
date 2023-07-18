@@ -3,12 +3,12 @@ from datetime import datetime
 from fastapi import FastAPI
 
 from config.db import create_db_and_tables
-from controllers import workers, type_workers
+from controllers import workers, type_workers, users
 from models import TypeWorker, Worker
+from models.user import User
 from routes.advances import apiAdvances
 from routes.day_sales import apiDaySales
 from routes.motions import apiMotions
-from routes.message_day_sales import apiMessageSales
 from routes.place_sales import apiPlaceSales
 from routes.places import apiPlaces
 from routes.product_day_sales import apiProductDaySales
@@ -43,35 +43,16 @@ app.include_router(apiTransfers, prefix="/transfer")
 app.include_router(apiWorkers, prefix="/worker")
 app.include_router(apiAdvances, prefix="/advance")
 app.include_router(apiMotions, prefix="/motion")
-app.include_router(apiMessageSales, prefix="/message")
 app.include_router(apiProducts, prefix="/product")
 app.include_router(apiSession)
 
-
-def main():
+if __name__ == "__main__":
     create_db_and_tables()
 
-    if len(type_workers.all()) == 0:
-        typeWorker: TypeWorker = TypeWorker()
-        typeWorker.description = "VENDEDOR"
-        typeWorker.save()
-
-    if len(workers.all()) == 0:
-        worker: Worker = Worker()
-        worker.typeWorker_id = 1
-        worker.dni = "62020554"
-        worker.admin = True
-        worker.names = "JAVIER ERNESTO"
-        worker.lastNames = "MORENO LLOCLLE"
-        worker.phone = "940029541"
-        worker.salary = 1200.0
-        worker.sex = "MASCULINO"
-        worker.start = datetime.now()
-        worker.birthday = datetime.now()
-        worker.save()
+    if len(users.all()) == 0:
+        user: User = User()
+        user.username = "admin"
+        user.password = "admin"
+        user.save()
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
-
-if __name__ == "__main__":
-    main()

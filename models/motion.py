@@ -1,6 +1,5 @@
 from datetime import datetime
 from typing import Optional
-
 from pydantic import condecimal
 from sqlmodel import SQLModel, Field, Relationship
 
@@ -25,6 +24,11 @@ class Motion(Moreno, MotionBase, table=True):
     daySale: Optional["DaySale"] = Relationship(back_populates="motions", sa_relationship_kwargs={"lazy": "subquery"})
     placeSale: Optional["PlaceSale"] = Relationship(back_populates="motions",
                                                     sa_relationship_kwargs={"lazy": "subquery"})
+
+    def delete(self):
+        self.amount = 0.0
+        self.deleted = True
+        self.save()
 
 
 class MotionRead(MotionBase):

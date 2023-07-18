@@ -39,6 +39,14 @@ class ProductPlaceSale(Moreno, SQLModel, table=True):
         self.quantitySold = self.quantityInitial + quantityTransfer - self.quantityRest
         self.totalSale = self.quantitySold * float(self.productDaySale.price)
 
+    def delete(self):
+        self.quantityInitial = 0
+        self.quantityRest = 0
+        self.quantitySold = 0
+        self.totalSale = 0.0
+        self.deleted = True
+        self.save()
+
 
 class ProductPlaceSaleRead(SQLModel):
     id: int

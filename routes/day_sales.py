@@ -9,12 +9,6 @@ from models.product_place_sale import ProductPlaceSale
 apiDaySales = APIRouter()
 
 
-@apiDaySales.get("/", response_model=list[DaySaleRead], status_code=status.HTTP_200_OK)
-async def get_all(user=Depends(manager)):
-    day_sales_list = day_sales.get_all()
-    return day_sales_list
-
-
 @apiDaySales.post("/", response_model=DaySaleReadCreate, status_code=status.HTTP_201_CREATED)
 async def create(schema: DaySaleBase, user=Depends(manager)):
     daySale: DaySale = DaySale.from_orm(schema)

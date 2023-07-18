@@ -28,6 +28,11 @@ class Advance(Moreno, AdvanceBase, table=True):
                                                     sa_relationship_kwargs={"lazy": "subquery"})
     worker: Optional["Worker"] = Relationship(sa_relationship_kwargs={"lazy": "subquery"})
 
+    def delete(self):
+        self.amount = 0.0
+        self.deleted = True
+        self.save()
+
 
 class AdvanceRead(AdvanceBase):
     id: int

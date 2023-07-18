@@ -10,12 +10,6 @@ from routes.sessions import manager
 apiProductDaySales = APIRouter()
 
 
-@apiProductDaySales.get("/", response_model=list[ProductDaySale], status_code=status.HTTP_200_OK)
-async def get_all(user=Depends(manager)):
-    products_day_sale_list: list[ProductDaySale] = product_day_sales.all()
-    return products_day_sale_list
-
-
 @apiProductDaySales.post("/", response_model=ProductDaySaleReadCreate, status_code=status.HTTP_201_CREATED)
 async def create(schema: ProductDaySaleBase, user=Depends(manager)):
     productDaySale: ProductDaySale = ProductDaySale.from_orm(schema)

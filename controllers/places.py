@@ -1,7 +1,6 @@
 from sqlmodel import select
 
 from config.moreno import Session
-from models import PlaceSale
 from models.place import Place
 
 

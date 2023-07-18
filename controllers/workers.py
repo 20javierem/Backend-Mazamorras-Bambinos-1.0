@@ -1,8 +1,6 @@
 from sqlmodel import select
 
 from config.moreno import Session
-from config.encryption import encrypt
-from models import PlaceSale
 from models.worker import Worker
 
 

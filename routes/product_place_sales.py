@@ -9,12 +9,6 @@ from routes.sessions import manager
 apiProductPlaceSales = APIRouter()
 
 
-@apiProductPlaceSales.get("/", response_model=list[ProductPlaceSale], status_code=status.HTTP_200_OK)
-async def get_all(user=Depends(manager)):
-    products_place_sale_list: list[ProductPlaceSale] = product_place_sales.all()
-    return products_place_sale_list
-
-
 @apiProductPlaceSales.post("/", response_model=ProductPlaceSaleReadDaySaleCreate, status_code=status.HTTP_201_CREATED)
 async def create(schema: ProductPlaceSaleCreate, user=Depends(manager)):
     product_place_sale: ProductPlaceSale = ProductPlaceSale.from_orm(schema)

@@ -8,13 +8,6 @@ from routes.sessions import manager
 
 apiMotions = APIRouter()
 
-
-@apiMotions.get("/", response_model=list[MotionRead], status_code=status.HTTP_200_OK)
-async def get_all(user=Depends(manager)):
-    products_day_sale_list: list[MotionRead] = expenses.all()
-    return products_day_sale_list
-
-
 @apiMotions.post("/", response_model=MotionRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: MotionBase, user=Depends(manager)):
     motion: Motion = Motion.from_orm(schema)

@@ -9,12 +9,6 @@ from routes.sessions import manager
 apiAdvances = APIRouter()
 
 
-@apiAdvances.get("/", response_model=list[AdvanceReadWithDetails], status_code=status.HTTP_200_OK)
-async def get_all(user=Depends(manager)):
-    day_sales_list = advances.all()
-    return day_sales_list
-
-
 @apiAdvances.post("/", response_model=AdvanceRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: AdvanceBase, user=Depends(manager)):
     advance: Advance = Advance.from_orm(schema)

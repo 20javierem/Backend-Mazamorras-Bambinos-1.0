@@ -9,12 +9,6 @@ from routes.sessions import manager
 apiTransfers = APIRouter()
 
 
-@apiTransfers.get("/", response_model=list[TransferRead], status_code=status.HTTP_200_OK)
-async def get_all(user=Depends(manager)):
-    transfers_list: list[TransferRead] = transfers.all()
-    return transfers_list
-
-
 @apiTransfers.post("/", response_model=TransferRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: TransferBase, user=Depends(manager)):
     transfer: Transfer = Transfer.from_orm(schema)

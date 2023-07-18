@@ -91,6 +91,15 @@ class PlaceSale(Moreno, PlaceSaleBase, table=True):
                 self.totalMotions -= float(motion.amount)
         self.totalCurrent = self.totalSale + self.totalMotions + self.totalAdvances
 
+    def delete(self):
+        self.deleted = True
+        self.totalSale = 0.0
+        self.totalAdvances = 0.0
+        self.totalCurrent = 0.0
+        self.totalMotions = 0.0
+        self.totalDelivered = 0.0
+        self.save()
+
 
 class PlaceSaleRead(PlaceSaleBase):
     id: int
@@ -114,6 +123,12 @@ class PlaceSaleReadWithDetails(PlaceSaleRead):
     transfersExit: list["TransferRead"] = []
     transfersEntry: list["TransferRead"] = []
     productPlaceSales: list["ProductPlaceSale"] = []
+
+
+class PlaceSaleReadForReport(PlaceSaleRead):
+    worker: Optional["WorkerRead"] = None
+    place: Optional["PlaceRead"] = None
+    daySale: Optional["DaySaleRead"] = None
 
 
 class PlaceSaleReadCreateWithDetails(PlaceSaleRead):

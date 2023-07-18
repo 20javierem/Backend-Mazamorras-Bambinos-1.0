@@ -1,7 +1,6 @@
 from sqlmodel import select
 
 from config.moreno import Session
-from models import ProductDaySale
 from models.product import Product
 
 
