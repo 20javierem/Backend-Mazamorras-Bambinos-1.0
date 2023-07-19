@@ -30,6 +30,10 @@ class Place(Moreno, PlaceBase, table=True):
                                         sa_column_kwargs={"onupdate": datetime.now})
     typePlace: Optional["TypePlace"] = Relationship(sa_relationship_kwargs={"lazy": "subquery"})
 
+    def delete(self):
+        self.active = False
+        self.save()
+
 
 class PlaceRead(PlaceBase):
     id: int

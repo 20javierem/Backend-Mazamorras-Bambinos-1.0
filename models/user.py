@@ -1,9 +1,10 @@
 from typing import Optional
 from datetime import datetime
 
+from pydantic import validator
 from sqlmodel import Field, SQLModel
 
-from config import encryption
+from config import auth
 from config.moreno import Moreno
 
 
@@ -12,9 +13,11 @@ class UserBase(SQLModel):
     password: str = Field(default=None)
     admin: bool = Field(default=False)
 
-    @password.setter
-    def password(self, value):
-        self.password = encryption.get_password_hash(value)
+    @validator('password')
+    def valid(cls, v):
+        if v is None:
+            raise ValueError('debe ingresar un valor valido')
+        return auth.get_password_hash(v)
 
 
 class User(Moreno, UserBase, table=True):
@@ -27,6 +30,21 @@ class User(Moreno, UserBase, table=True):
                                         nullable=False,
                                         sa_column_kwargs={"onupdate": datetime.now})
 
+    def delete(self):
+        self.deleted = True
+        self.save()
+
 
 class UserRead(UserBase):
     id: int
+
+
+class UserUpdate(SQLModel):
+    password: Optional[str]
+    admin: Optional[bool]
+
+    @validator('password')
+    def valid(cls, v):
+        if v is None:
+            raise ValueError('debe ingresar un valor valido')
+        return auth.get_password_hash(v)

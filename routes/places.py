@@ -45,6 +45,5 @@ async def delete(id: int, user=Depends(manager)):
     place: Place = places.get(id)
     if not place:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
-    place.active = False
-    place.save()
+    place.delete()
     return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -1,11 +1,9 @@
 import uvicorn
-from datetime import datetime
 from fastapi import FastAPI
 
 from config.db import create_db_and_tables
-from controllers import workers, type_workers, users
-from models import TypeWorker, Worker
-from models.user import User
+from controllers import users
+from models.user import User, UserBase
 from routes.advances import apiAdvances
 from routes.day_sales import apiDaySales
 from routes.motions import apiMotions
@@ -44,15 +42,16 @@ app.include_router(apiWorkers, prefix="/worker")
 app.include_router(apiAdvances, prefix="/advance")
 app.include_router(apiMotions, prefix="/motion")
 app.include_router(apiProducts, prefix="/product")
-app.include_router(apiSession)
+app.include_router(apiSession, prefix="/user")
 
 if __name__ == "__main__":
     create_db_and_tables()
 
     if len(users.all()) == 0:
-        user: User = User()
+        user: UserBase = User()
         user.username = "admin"
         user.password = "admin"
-        user.save()
+        user.admin = True
+        User.from_orm(user).save()
 
     uvicorn.run(app, host="0.0.0.0", port=8000)

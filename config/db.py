@@ -15,6 +15,7 @@ from models.motion import Motion
 from models.product_day_sale import ProductDaySale
 from models.transfer import Transfer
 from models.product_place_sale import ProductPlaceSale
+from models.user import User
 from sqlmodel import Session as SQLModelSession
 from sqlmodel import create_engine, SQLModel
 
