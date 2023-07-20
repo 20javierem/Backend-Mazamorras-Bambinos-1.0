@@ -8,13 +8,13 @@ from config.moreno import Moreno
 
 
 class ProductDaySaleBase(SQLModel):
-    price: condecimal(decimal_places=1) = Field(default=0)
+    price: condecimal(max_digits=10, decimal_places=1) = Field(default=0)
     daySale_id: Optional[int] = Field(default=None, foreign_key="day_sale_tbl.id")
     product_id: Optional[int] = Field(default=None, foreign_key="product_tbl.id")
 
 
 class ProductDaySaleCreate(SQLModel):
-    price: condecimal(decimal_places=1) = Field(default=0)
+    price: condecimal(max_digits=10, decimal_places=1) = Field(default=0)
     product_id: Optional[int]
 
 
