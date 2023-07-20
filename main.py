@@ -4,19 +4,19 @@ from fastapi import FastAPI
 from config.db import create_db_and_tables
 from controllers import users
 from models.user import User, UserBase
-from routes.advances import apiAdvances
-from routes.day_sales import apiDaySales
-from routes.motions import apiMotions
-from routes.place_sales import apiPlaceSales
-from routes.places import apiPlaces
-from routes.product_day_sales import apiProductDaySales
-from routes.product_place_sales import apiProductPlaceSales
-from routes.products import apiProducts
-from routes.sessions import apiSession
-from routes.transfers import apiTransfers
-from routes.type_places import apiTypePlaces
-from routes.type_workers import apiTypeWorkers
-from routes.workers import apiWorkers
+from routes.advances import router as router_advances
+from routes.day_sales import router as router_day_sales
+from routes.motions import router as router_motions
+from routes.place_sales import router as router_place_sales
+from routes.places import router as router_places
+from routes.product_day_sales import router as router_product_day_sales
+from routes.product_place_sales import router as router_product_place_sales
+from routes.products import router as router_products
+from routes.users import router as router_users
+from routes.transfers import router as router_transfers
+from routes.type_places import router as router_type_places
+from routes.type_workers import router as router_type_workers
+from routes.workers import router as router_workers
 
 create_db_and_tables()
 app = FastAPI()
@@ -30,19 +30,19 @@ async def root():
     return "bienvenido"
 
 
-app.include_router(apiTypePlaces, prefix="/type-place")
-app.include_router(apiTypeWorkers, prefix="/type-worker")
-app.include_router(apiDaySales, prefix="/day-sale")
-app.include_router(apiPlaceSales, prefix="/place-sale")
-app.include_router(apiPlaces, prefix="/place")
-app.include_router(apiProductDaySales, prefix="/product-day-sale")
-app.include_router(apiProductPlaceSales, prefix="/product-place-sale")
-app.include_router(apiTransfers, prefix="/transfer")
-app.include_router(apiWorkers, prefix="/worker")
-app.include_router(apiAdvances, prefix="/advance")
-app.include_router(apiMotions, prefix="/motion")
-app.include_router(apiProducts, prefix="/product")
-app.include_router(apiSession, prefix="/user")
+app.include_router(router_type_places, prefix="/type-place")
+app.include_router(router_type_workers, prefix="/type-worker")
+app.include_router(router_day_sales, prefix="/day-sale")
+app.include_router(router_place_sales, prefix="/place-sale")
+app.include_router(router_places, prefix="/place")
+app.include_router(router_product_day_sales, prefix="/product-day-sale")
+app.include_router(router_product_place_sales, prefix="/product-place-sale")
+app.include_router(router_transfers, prefix="/transfer")
+app.include_router(router_workers, prefix="/worker")
+app.include_router(router_advances, prefix="/advance")
+app.include_router(router_motions, prefix="/motion")
+app.include_router(router_products, prefix="/product")
+app.include_router(router_users, prefix="/user")
 
 if __name__ == "__main__":
     create_db_and_tables()

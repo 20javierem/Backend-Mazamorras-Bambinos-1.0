@@ -4,12 +4,12 @@ import controllers.advances as advances
 from controllers import day_sales, place_sales
 from models import DaySale, PlaceSale
 from models.advance import Advance, AdvanceBase, AdvanceUpdate, AdvanceReadWithDetails, AdvanceRead
-from routes.sessions import manager
+from routes.users import manager
 
-apiAdvances = APIRouter()
+router = APIRouter()
 
 
-@apiAdvances.post("/", response_model=AdvanceRead, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=AdvanceRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: AdvanceBase, user=Depends(manager)):
     advance: Advance = Advance.from_orm(schema)
     day_sale_id: int = advance.daySale_id
@@ -26,7 +26,7 @@ async def create(schema: AdvanceBase, user=Depends(manager)):
     return advance
 
 
-@apiAdvances.get("/{id}", response_model=AdvanceReadWithDetails, status_code=status.HTTP_200_OK)
+@router.get("/{id}", response_model=AdvanceReadWithDetails, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
     advance: AdvanceReadWithDetails = advances.get(id)
     if advance is None:
@@ -34,7 +34,7 @@ async def get(id: int, user=Depends(manager)):
     return advance
 
 
-@apiAdvances.patch('/{id}', response_model=AdvanceRead, status_code=status.HTTP_202_ACCEPTED)
+@router.patch('/{id}', response_model=AdvanceRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: AdvanceUpdate, user=Depends(manager)):
     advance: Advance = advances.get(id)
     if not advance:
@@ -58,7 +58,7 @@ async def update(id: int, schema: AdvanceUpdate, user=Depends(manager)):
     return advance
 
 
-@apiAdvances.delete('/{id}')
+@router.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
     advance: Advance = advances.get(id)
     if not advance:

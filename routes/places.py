@@ -2,25 +2,25 @@ from fastapi import APIRouter, Response, status, Depends, HTTPException
 
 import controllers.places as places
 from models.place import Place, PlaceBase, PlaceUpdate, PlaceRead, PlaceReadWithType
-from routes.sessions import manager
+from routes.users import manager
 
-apiPlaces = APIRouter()
+router = APIRouter()
 
 
-@apiPlaces.get("/", response_model=list[PlaceRead], status_code=status.HTTP_200_OK)
+@router.get("/", response_model=list[PlaceRead], status_code=status.HTTP_200_OK)
 async def get_all(user=Depends(manager)):
     products_day_sale_list: list[PlaceRead] = places.all()
     return products_day_sale_list
 
 
-@apiPlaces.post("/", response_model=PlaceRead, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=PlaceRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: PlaceBase, user=Depends(manager)):
     place: Place = Place.from_orm(schema)
     place.save()
     return place
 
 
-@apiPlaces.get("/{id}", response_model=PlaceReadWithType, status_code=status.HTTP_200_OK)
+@router.get("/{id}", response_model=PlaceReadWithType, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
     place: PlaceReadWithType = places.get(id)
     if place is None:
@@ -28,7 +28,7 @@ async def get(id: int, user=Depends(manager)):
     return place
 
 
-@apiPlaces.patch('/{id}', response_model=PlaceRead, status_code=status.HTTP_202_ACCEPTED)
+@router.patch('/{id}', response_model=PlaceRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: PlaceUpdate, user=Depends(manager)):
     place: Place = places.get(id)
     if not place:
@@ -40,7 +40,7 @@ async def update(id: int, schema: PlaceUpdate, user=Depends(manager)):
     return place
 
 
-@apiPlaces.delete('/{id}')
+@router.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
     place: Place = places.get(id)
     if not place:

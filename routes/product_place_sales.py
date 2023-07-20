@@ -1,15 +1,15 @@
-from fastapi import APIRouter, Response, status, Depends, HTTPException
+from fastapi import APIRouter, status, Depends, HTTPException
 
 import controllers.product_place_sales as product_place_sales
 from controllers import place_sales, product_day_sales, day_sales
 from models.product_place_sale import ProductPlaceSale, ProductPlaceSaleUpdate, ProductPlaceSaleCreate, \
-    ProductPlaceSaleReadDaySaleCreate, ProductPlaceSaleRead
-from routes.sessions import manager
+    ProductPlaceSaleReadDaySaleCreate, ProductPlaceSaleRead, ProductPlaceSaleReadReport
+from routes.users import manager
 
-apiProductPlaceSales = APIRouter()
+router = APIRouter()
 
 
-@apiProductPlaceSales.post("/", response_model=ProductPlaceSaleReadDaySaleCreate, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=ProductPlaceSaleReadDaySaleCreate, status_code=status.HTTP_201_CREATED)
 async def create(schema: ProductPlaceSaleCreate, user=Depends(manager)):
     product_place_sale: ProductPlaceSale = ProductPlaceSale.from_orm(schema)
     product_place_sale.save()
@@ -32,7 +32,7 @@ async def create(schema: ProductPlaceSaleCreate, user=Depends(manager)):
     return product_place_sale
 
 
-@apiProductPlaceSales.get("/{id}", response_model=ProductPlaceSale, status_code=status.HTTP_200_OK)
+@router.get("/{id}", response_model=ProductPlaceSale, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
     product_place_sale: ProductPlaceSale = product_place_sales.get(id)
     if product_place_sale is None:
@@ -40,7 +40,7 @@ async def get(id: int, user=Depends(manager)):
     return product_place_sale
 
 
-@apiProductPlaceSales.patch('/{id}', response_model=ProductPlaceSaleRead, status_code=status.HTTP_202_ACCEPTED)
+@router.patch('/{id}', response_model=ProductPlaceSaleRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: ProductPlaceSaleUpdate, user=Depends(manager)):
     product_place_sale: ProductPlaceSale = product_place_sales.get(id)
     if not product_place_sale:
@@ -65,3 +65,35 @@ async def update(id: int, schema: ProductPlaceSaleUpdate, user=Depends(manager))
     daySale.save()
 
     return product_place_sale
+
+
+@router.get("/worker/{idProduct}/{idWorker}/{start}/{end}", response_model=list[ProductPlaceSaleReadReport],
+            status_code=status.HTTP_200_OK)
+async def get_by_product_worker(idProduct: int, idWorker: int, start: str, end: str, user=Depends(manager)):
+    product_place_sale_list: list[ProductPlaceSaleReadReport] = product_place_sales.get_by_product_and_worker(
+        idProduct, idWorker, start, end)
+    return product_place_sale_list
+
+
+@router.get("/place/{idProduct}/{idPlace}/{start}/{end}", response_model=list[ProductPlaceSaleReadReport],
+            status_code=status.HTTP_200_OK)
+def get_by_product_place(idProduct: int, idPlace: int, start: str, end: str, user=Depends(manager)):
+    product_place_sale_list: list[ProductPlaceSaleReadReport] = product_place_sales.get_by_product_and_place(
+        idProduct, idPlace, start, end)
+    return product_place_sale_list
+
+
+@router.get("/{idProduct}/{idWorker}/{idPlace}/{start}/{end}", response_model=list[ProductPlaceSaleReadReport],
+            status_code=status.HTTP_200_OK)
+async def get_by_product_place_worker(idProduct: int, idWorker: int, idPlace: int, start: str, end: str,
+                                      user=Depends(manager)):
+    product_place_sale_list: list[ProductPlaceSaleReadReport] = product_place_sales.get_by_product_and_place_and_worker(
+        idProduct, idWorker, idPlace, start, end)
+    print(len(product_place_sale_list))
+    return product_place_sale_list
+
+
+@router.get("/{id}/{start}/{end}", response_model=list[ProductPlaceSaleReadReport], status_code=status.HTTP_200_OK)
+async def get_by_product_between(id: int, start: str, end: str, user=Depends(manager)):
+    product_place_sale_list: list[ProductPlaceSaleReadReport] = product_place_sales.get_by_product(id, start, end)
+    return product_place_sale_list

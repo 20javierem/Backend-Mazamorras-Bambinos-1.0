@@ -7,9 +7,9 @@ from models.place_sale import PlaceSale, PlaceSaleReadWithDetails, PlaceSaleRead
     PlaceSaleReadForReport
 from models.product import ProductRead, Product
 from models.product_day_sale import ProductDaySale, ProductDaySaleRead, ProductDaySaleReadWithDetails, \
-    ProductDaySaleReadCreate
+    ProductDaySaleReadCreate, ProductDaySaleReadReport
 from models.product_place_sale import ProductPlaceSale, ProductPlaceSaleReadWithDetails, ProductPlaceSaleRead, \
-    ProductPlaceSaleReadDaySaleCreate, ProductPlaceSaleCreate
+    ProductPlaceSaleReadDaySaleCreate, ProductPlaceSaleCreate, ProductPlaceSaleReadReport
 from models.transfer import TransferRead, Transfer, TransferBase
 from models.type_place import TypePlace, TypePlaceRead
 from models.type_worker import TypeWorker, TypeWorkerRead
@@ -49,7 +49,8 @@ DaySaleReadCreate.update_forward_refs(PlaceSaleReadCreateWithDetails=PlaceSaleRe
 DaySale.update_forward_refs(PlaceSale=PlaceSale, ProductDaySale=ProductDaySale, Advance=Advance, Motion=Motion)
 
 DaySaleReadWithDetails.update_forward_refs(PlaceSaleReadForDaySale=PlaceSaleReadForDaySale,
-                                           ProductDaySaleReadWithDetails=ProductDaySaleReadWithDetails, AdvanceRead=AdvanceRead,
+                                           ProductDaySaleReadWithDetails=ProductDaySaleReadWithDetails,
+                                           AdvanceRead=AdvanceRead,
                                            MotionRead=MotionRead)
 PlaceSaleReadCreateWithDetails.update_forward_refs(ProductPlaceSaleReadDaySaleCreate=ProductPlaceSaleReadDaySaleCreate)
 
@@ -67,3 +68,7 @@ PlaceSaleReadForDaySale.update_forward_refs(TransferRead=TransferRead, MotionRea
 
 PlaceSaleReadForReport.update_forward_refs(WorkerRead=WorkerRead, PlaceRead=PlaceRead, DaySaleRead=DaySaleRead)
 
+ProductDaySaleReadReport.update_forward_refs(DaySaleRead=DaySaleRead)
+
+ProductPlaceSaleReadReport.update_forward_refs(PlaceSaleReadForReport=PlaceSaleReadForReport,
+                                               ProductDaySaleReadReport=ProductDaySaleReadReport)

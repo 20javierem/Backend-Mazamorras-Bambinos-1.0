@@ -2,25 +2,25 @@ from fastapi import APIRouter, Response, status, Depends, HTTPException
 
 import controllers.products as products
 from models.product import Product, ProductUpdate, ProductCreate, ProductRead
-from routes.sessions import manager
+from routes.users import manager
 
-apiProducts = APIRouter()
+router = APIRouter()
 
 
-@apiProducts.get("/", response_model=list[ProductRead], status_code=status.HTTP_200_OK)
+@router.get("/", response_model=list[ProductRead], status_code=status.HTTP_200_OK)
 async def get_all(user=Depends(manager)):
     places_list: list[ProductRead] = products.all()
     return places_list
 
 
-@apiProducts.post("/", response_model=ProductRead, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=ProductRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: ProductCreate, user=Depends(manager)):
     product: Product = Product.from_orm(schema)
     product.save()
     return product
 
 
-@apiProducts.get("/{id}", response_model=ProductRead, status_code=status.HTTP_200_OK)
+@router.get("/{id}", response_model=ProductRead, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
     product: ProductRead = products.get(id)
     if product is None:
@@ -28,7 +28,7 @@ async def get(id: int, user=Depends(manager)):
     return product
 
 
-@apiProducts.patch('/{id}', response_model=ProductRead, status_code=status.HTTP_202_ACCEPTED)
+@router.patch('/{id}', response_model=ProductRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: ProductUpdate, user=Depends(manager)):
     product: Product = products.get(id)
     if not product:
@@ -40,7 +40,7 @@ async def update(id: int, schema: ProductUpdate, user=Depends(manager)):
     return product
 
 
-@apiProducts.delete('/{id}')
+@router.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
     product: Product = products.get(id)
     if not product:

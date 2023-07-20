@@ -74,6 +74,11 @@ class ProductPlaceSaleReadDaySaleCreate(SQLModel):
     productDaySale_id: int
 
 
+class ProductPlaceSaleReadReport(ProductPlaceSaleRead):
+    productDaySale: Optional["ProductDaySaleReadReport"] = None
+    placeSale: Optional["PlaceSaleReadForReport"] = None
+
+
 class ProductPlaceSaleReadWithDetails(ProductPlaceSaleRead):
     productDaySale: Optional["ProductDaySaleRead"] = None
     placeSale: Optional["PlaceSaleRead"] = None

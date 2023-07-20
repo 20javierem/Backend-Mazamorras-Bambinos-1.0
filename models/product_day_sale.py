@@ -47,6 +47,14 @@ class ProductDaySale(Moreno, ProductDaySaleBase, table=True):
             self.quantitySold += productPlaceSale.quantitySold
             self.totalSale += productPlaceSale.totalSale
 
+    def delete(self):
+        self.quantityInitial = 0
+        self.quantityRest = 0
+        self.quantitySold = 0
+        self.totalSale = 0.0
+        self.deleted = True
+        self.save()
+
 
 class ProductDaySaleRead(ProductDaySaleBase):
     id: int
@@ -55,6 +63,10 @@ class ProductDaySaleRead(ProductDaySaleBase):
     quantityRest: float
     quantitySold: float
     totalSale: float
+
+
+class ProductDaySaleReadReport(ProductDaySaleRead):
+    daySale: Optional["DaySaleRead"] = None
 
 
 class ProductDaySaleReadCreate(ProductDaySaleRead):

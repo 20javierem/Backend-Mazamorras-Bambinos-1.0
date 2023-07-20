@@ -4,12 +4,12 @@ from controllers import place_sales, day_sales, product_place_sales, transfers, 
 from models import DaySale, ProductPlaceSale, Transfer, Motion, Advance
 from models.place_sale import PlaceSaleReadWithDetails, PlaceSaleUpdate, PlaceSale, PlaceSaleRead, PlaceSaleBase, \
     PlaceSaleReadCreateWithDetails, PlaceSaleReadForReport
-from routes.sessions import manager
+from routes.users import manager
 
-apiPlaceSales = APIRouter()
+router = APIRouter()
 
 
-@apiPlaceSales.post("/", response_model=PlaceSaleReadCreateWithDetails, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=PlaceSaleReadCreateWithDetails, status_code=status.HTTP_201_CREATED)
 async def create(schema: PlaceSaleBase, user=Depends(manager)):
     placeSale: PlaceSale = PlaceSale.from_orm(schema)
     placeSale.save()  # idPlaceSale
@@ -20,7 +20,7 @@ async def create(schema: PlaceSaleBase, user=Depends(manager)):
     return placeSale
 
 
-@apiPlaceSales.get("/{id}", response_model=PlaceSaleReadWithDetails, status_code=status.HTTP_200_OK)
+@router.get("/{id}", response_model=PlaceSaleReadWithDetails, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
     place_sale: PlaceSaleReadWithDetails = place_sales.get(id)
     if place_sale is None:
@@ -28,7 +28,7 @@ async def get(id: int, user=Depends(manager)):
     return place_sale
 
 
-@apiPlaceSales.patch('/{id}', response_model=PlaceSaleRead, status_code=status.HTTP_202_ACCEPTED)
+@router.patch('/{id}', response_model=PlaceSaleRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: PlaceSaleUpdate, user=Depends(manager)):
     placeSale: PlaceSale = place_sales.get(id)
     if not placeSale:
@@ -46,7 +46,7 @@ async def update(id: int, schema: PlaceSaleUpdate, user=Depends(manager)):
     return placeSale.save()
 
 
-@apiPlaceSales.delete('/{id}')
+@router.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
     placeSale: PlaceSale = place_sales.get(id)
     if not placeSale:
@@ -87,29 +87,29 @@ async def delete(id: int, user=Depends(manager)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@apiPlaceSales.get("/worker/{id}/{start}/{end}", response_model=list[PlaceSaleReadForReport],
-                   status_code=status.HTTP_200_OK)
+@router.get("/worker/{id}/{start}/{end}", response_model=list[PlaceSaleReadForReport],
+            status_code=status.HTTP_200_OK)
 async def get_by_worker_between(id: int, start: str, end: str, user=Depends(manager)):
     place_sales_list = place_sales.get_by_worker_between(id, start, end)
     return place_sales_list
 
 
-@apiPlaceSales.get("/place/{id}/{start}/{end}", response_model=list[PlaceSaleReadForReport],
-                   status_code=status.HTTP_200_OK)
+@router.get("/place/{id}/{start}/{end}", response_model=list[PlaceSaleReadForReport],
+            status_code=status.HTTP_200_OK)
 async def get_by_place_between(id: int, start: str, end: str, user=Depends(manager)):
     place_sales_list = place_sales.get_by_place_between(id, start, end)
     return place_sales_list
 
 
-@apiPlaceSales.get("/{start}/{end}", response_model=list[PlaceSaleReadForReport],
-                   status_code=status.HTTP_200_OK)
+@router.get("/{start}/{end}", response_model=list[PlaceSaleReadForReport],
+            status_code=status.HTTP_200_OK)
 async def get_between(start: str, end: str, user=Depends(manager)):
     place_sales_list = place_sales.get_between(start, end)
     return place_sales_list
 
 
-@apiPlaceSales.get("/place-worker/{start}/{end}", response_model=list[PlaceSaleReadForReport],
-                   status_code=status.HTTP_200_OK)
+@router.get("/{idWorker}/{idPlace}/{start}/{end}", response_model=list[PlaceSaleReadForReport],
+            status_code=status.HTTP_200_OK)
 async def get_by_place_worker_between(idWorker: int, idPlace: int, start: str, end: str, user=Depends(manager)):
     place_sales_list = place_sales.get_by_place_worker_between(idWorker, idPlace, start, end)
     return place_sales_list

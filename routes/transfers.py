@@ -4,12 +4,12 @@ import controllers.transfers as transfers
 from controllers import place_sales, product_place_sales
 from models import PlaceSale, ProductPlaceSale
 from models.transfer import Transfer, TransferUpdate, TransferBase, TransferRead
-from routes.sessions import manager
+from routes.users import manager
 
-apiTransfers = APIRouter()
+router = APIRouter()
 
 
-@apiTransfers.post("/", response_model=TransferRead, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=TransferRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: TransferBase, user=Depends(manager)):
     transfer: Transfer = Transfer.from_orm(schema)
     transfer.save()
@@ -18,7 +18,7 @@ async def create(schema: TransferBase, user=Depends(manager)):
     return transfer
 
 
-@apiTransfers.get("/{id}", response_model=TransferRead, status_code=status.HTTP_200_OK)
+@router.get("/{id}", response_model=TransferRead, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
     transfer: TransferRead = transfers.get(id)
     if transfer is None:
@@ -26,7 +26,7 @@ async def get(id: int, user=Depends(manager)):
     return transfer
 
 
-@apiTransfers.patch('/{id}', response_model=TransferRead, status_code=status.HTTP_202_ACCEPTED)
+@router.patch('/{id}', response_model=TransferRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: TransferUpdate, user=Depends(manager)):
     transfer: Transfer = transfers.get(id)
     if not transfer:
@@ -51,7 +51,7 @@ async def update(id: int, schema: TransferUpdate, user=Depends(manager)):
     return transfer
 
 
-@apiTransfers.delete('/{id}')
+@router.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
     transfer: Transfer = transfers.get(id)
     if not transfer:

@@ -11,9 +11,9 @@ from controllers import users
 from models.user import User, UserRead, UserUpdate, UserBase
 
 SECRET: str = "ae0a9c1be3af1ad21bdf328547068c14557527eada6e63e0"
-manager: LoginManager = LoginManager(SECRET, '/login', default_expiry=timedelta(hours=12))
+manager: LoginManager = LoginManager(SECRET, 'user/login', default_expiry=timedelta(hours=12))
 
-apiSession: APIRouter = APIRouter()
+router: APIRouter = APIRouter()
 
 
 @manager.user_loader()
@@ -31,7 +31,7 @@ def authenticate_user(username: str, password: str):
     return user
 
 
-@apiSession.post('/login')
+@router.post('/login')
 async def login(data: OAuth2PasswordRequestForm = Depends()):
     username: str = data.username
     password: str = data.password
@@ -45,7 +45,7 @@ async def login(data: OAuth2PasswordRequestForm = Depends()):
     return {'access_token': access_token, 'user': UserRead.from_orm(user)}
 
 
-@apiSession.post("/", response_model=UserRead, status_code=status.HTTP_202_ACCEPTED)
+@router.post("/", response_model=UserRead, status_code=status.HTTP_202_ACCEPTED)
 async def create(schema: UserBase, user=Depends(manager)):
     user: User = User.from_orm(schema)
     if users.getByUsername(user.username) is not None:
@@ -54,7 +54,7 @@ async def create(schema: UserBase, user=Depends(manager)):
     return user
 
 
-@apiSession.patch("/{id}", response_model=UserRead, status_code=status.HTTP_202_ACCEPTED)
+@router.patch("/{id}", response_model=UserRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: UserUpdate, user=Depends(manager)):
     user: User = users.get(id)
     if not user:
@@ -66,7 +66,7 @@ async def update(id: int, schema: UserUpdate, user=Depends(manager)):
     return user
 
 
-@apiSession.delete('/{id}')
+@router.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
     user: User = users.get(id)
     if not user:

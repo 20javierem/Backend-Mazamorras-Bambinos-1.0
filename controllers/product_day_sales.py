@@ -1,4 +1,5 @@
 from datetime import datetime
+from operator import invert
 
 from sqlalchemy import asc
 from sqlmodel import select
@@ -12,13 +13,14 @@ def get(id: int):
     with Session() as session:
         return session.get(ProductDaySale, id)
 
-def get_by_product_and_range_of_date(idProduct: int, start: str, end: str):
+
+def get_by_product_between(idProduct: int, start: str, end: str):
     try:
+        start: datetime = datetime.strptime(start, '%Y-%m-%d')
+        end: datetime = datetime.strptime(end, '%Y-%m-%d')
         with Session() as session:
-            start: datetime = datetime.strptime(start, '%Y-%m-%d')
-            end: datetime = datetime.strptime(end, '%Y-%m-%d')
             statement = select(ProductDaySale).join(DaySale).where(
-                not ProductDaySale.deleted,
+                invert(ProductDaySale.deleted),
                 ProductDaySale.product_id == idProduct,
                 DaySale.date >= start.date(),
                 DaySale.date <= end.date()

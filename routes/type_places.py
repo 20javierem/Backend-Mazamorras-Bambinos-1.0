@@ -2,25 +2,25 @@ from fastapi import APIRouter, Response, status, Depends, HTTPException
 
 import controllers.type_places as type_places
 from models.type_place import TypePlace, TypePlaceUpdate, TypePlaceCreate, TypePlaceRead
-from routes.sessions import manager
+from routes.users import manager
 
-apiTypePlaces = APIRouter()
+router = APIRouter()
 
 
-@apiTypePlaces.get("/", response_model=list[TypePlaceRead], status_code=status.HTTP_200_OK)
+@router.get("/", response_model=list[TypePlaceRead], status_code=status.HTTP_200_OK)
 async def get_all(user=Depends(manager)):
     types_places_list: list[TypePlaceRead] = type_places.all()
     return types_places_list
 
 
-@apiTypePlaces.post("/", response_model=TypePlaceRead, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=TypePlaceRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: TypePlaceCreate, user=Depends(manager)):
     type_place: TypePlace = TypePlace.from_orm(schema)
     type_place.save()
     return type_place
 
 
-@apiTypePlaces.get("/{id}", response_model=TypePlaceRead, status_code=status.HTTP_200_OK)
+@router.get("/{id}", response_model=TypePlaceRead, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
     type_place: TypePlaceRead = type_places.get(id)
     if type_place is None:
@@ -28,7 +28,7 @@ async def get(id: int, user=Depends(manager)):
     return type_place
 
 
-@apiTypePlaces.patch('/{id}', response_model=TypePlaceRead, status_code=status.HTTP_202_ACCEPTED)
+@router.patch('/{id}', response_model=TypePlaceRead, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: TypePlaceUpdate, user=Depends(manager)):
     type_place: TypePlace = type_places.get(id)
     if not type_place:
@@ -40,7 +40,7 @@ async def update(id: int, schema: TypePlaceUpdate, user=Depends(manager)):
     return type_place
 
 
-@apiTypePlaces.delete('/{id}')
+@router.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
     type_place: TypePlace = type_places.get(id)
     if not type_place:

@@ -4,11 +4,11 @@ import controllers.motions as expenses
 from controllers import place_sales, day_sales
 from models import PlaceSale, DaySale
 from models.motion import Motion, MotionUpdate, MotionRead, MotionBase
-from routes.sessions import manager
+from routes.users import manager
 
-apiMotions = APIRouter()
+router = APIRouter()
 
-@apiMotions.post("/", response_model=MotionRead, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=MotionRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: MotionBase, user=Depends(manager)):
     motion: Motion = Motion.from_orm(schema)
     if motion.placeSale_id is not None:
@@ -28,7 +28,7 @@ async def create(schema: MotionBase, user=Depends(manager)):
     return motion
 
 
-@apiMotions.get("/{id}", response_model=MotionRead, status_code=status.HTTP_200_OK)
+@router.get("/{id}", response_model=MotionRead, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
     motion: MotionRead = expenses.get(id)
     if motion is None:
@@ -36,7 +36,7 @@ async def get(id: int, user=Depends(manager)):
     return motion
 
 
-@apiMotions.patch('/{id}', response_model=Motion, status_code=status.HTTP_202_ACCEPTED)
+@router.patch('/{id}', response_model=Motion, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: MotionUpdate, user=Depends(manager)):
     motion: Motion = expenses.get(id)
     if not motion:
@@ -60,7 +60,7 @@ async def update(id: int, schema: MotionUpdate, user=Depends(manager)):
     return motion
 
 
-@apiMotions.delete('/{id}')
+@router.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
     motion: Motion = expenses.get(id)
     if not motion:
