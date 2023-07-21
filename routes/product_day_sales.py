@@ -37,9 +37,7 @@ async def update(id: int, schema: ProductDaySaleUpdate, user=Depends(manager)):
     schema_data = schema.dict(exclude_unset=True)
     for key, value in schema_data.items():
         setattr(productDaySale, key, value)
-    print(productDaySale.price)
     productDaySale.save()
-    print(productDaySale.price)
     for productPlaceSale in productDaySale.productPlaceSales:
         productPlaceSale: ProductPlaceSale = product_place_sales.get(productPlaceSale.id)
         productPlaceSale.calculate_totals()
