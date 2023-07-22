@@ -49,6 +49,8 @@ if __name__ == "__main__":
 
     if len(users.all()) == 0:
         user: UserBase = User()
+        user.firstnames = "admin"
+        user.lastnames = "admin"
         user.username = "admin"
         user.password = "admin"
         user.admin = True

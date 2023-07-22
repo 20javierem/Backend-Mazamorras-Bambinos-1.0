@@ -7,8 +7,8 @@ from config.moreno import Moreno
 
 
 class WorkerBase(SQLModel):
-    names: str
-    lastNames: str
+    firstnames: str
+    lastnames: str
     dni: str
     sex: str
     phone: str
@@ -39,8 +39,8 @@ class WorkerReadWithType(WorkerRead):
 
 
 class WorkerUpdate(SQLModel):
-    names: Optional[str]
-    lastNames: Optional[str]
+    firstnames: Optional[str]
+    lastnames: Optional[str]
     sex: Optional[str]
     dni: Optional[str]
     phone: Optional[str]

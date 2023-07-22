@@ -9,6 +9,8 @@ from config.moreno import Moreno
 
 
 class UserBase(SQLModel):
+    firstnames: str
+    lastnames: str
     username: str = Field(default=None)
     password: str = Field(default=None)
     admin: bool = Field(default=False)
@@ -40,6 +42,8 @@ class UserRead(UserBase):
 
 
 class UserUpdate(SQLModel):
+    firstnames: Optional[str]
+    lastnames: Optional[str]
     password: Optional[str]
     admin: Optional[bool]
 
