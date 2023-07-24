@@ -1,3 +1,4 @@
+from sqlalchemy import asc
 from sqlmodel import select
 
 from config.moreno import Session
@@ -11,5 +12,6 @@ def get(id: int):
 
 def all():
     with Session() as session:
-        statement = select(Place)
+        statement = select(Place).order_by(
+            asc(Place.description))
         return session.exec(statement).all()

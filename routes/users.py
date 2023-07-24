@@ -49,7 +49,8 @@ async def login(data: OAuth2PasswordRequestForm = Depends()):
 async def create(schema: UserBase, user=Depends(manager)):
     user: User = User.from_orm(schema)
     if users.getByUsername(user.username) is not None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "nombre de usuario ya registrado"})
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                            detail={"Error": "nombre de usuario ya registrado"})
     user.save()
     return user
 
@@ -68,6 +69,8 @@ async def update(id: int, schema: UserUpdate, user=Depends(manager)):
 
 @router.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
+    if id == 1:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "is superUser"})
     user: User = users.get(id)
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})

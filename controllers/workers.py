@@ -1,3 +1,4 @@
+from sqlalchemy import asc
 from sqlmodel import select
 
 from config.moreno import Session
@@ -11,13 +12,15 @@ def get(id: int):
 
 def all():
     with Session() as session:
-        statement = select(Worker)
+        statement = select(Worker).order_by(
+                asc(Worker.firstnames))
         return session.exec(statement).all()
 
 
 def actives():
     with Session() as session:
-        statement = select(Worker).where(Worker.active)
+        statement = select(Worker).where(Worker.active).order_by(
+                asc(Worker.firstnames))
         return session.exec(statement).all()
 
 
