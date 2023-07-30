@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Response, status, Depends, HTTPException
+from fastapi import APIRouter, status, Depends, HTTPException
 
 import controllers.day_sales as day_sales
 from models import PlaceSale, ProductDaySale
-from models.day_sale import DaySale, DaySaleBase, DaySaleUpdate, DaySaleReadWithDetails, DaySaleRead, DaySaleReadCreate
-from routes.users import manager
+from models.day_sale import DaySale, DaySaleBase, DaySaleUpdate, DaySaleReadWithDetails, DaySaleReadCreate
 from models.product_place_sale import ProductPlaceSale
+from routes.users import manager
 
 router = APIRouter()
 
