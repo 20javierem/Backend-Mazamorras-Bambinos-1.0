@@ -1,7 +1,3 @@
-from contextlib import contextmanager
-
-from passlib.context import CryptContext
-
 from config.moreno import engine
 from models.type_worker import TypeWorker
 from models.worker import Worker
@@ -17,10 +13,7 @@ from models.transfer import Transfer
 from models.product_place_sale import ProductPlaceSale
 from models.user import User
 from sqlmodel import Session as SQLModelSession
-from sqlmodel import create_engine, SQLModel
-
-
-# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+from sqlmodel import SQLModel
 
 
 def create_db_and_tables():
