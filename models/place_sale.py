@@ -93,6 +93,8 @@ class PlaceSale(Moreno, PlaceSaleBase, table=True):
 
     def delete(self):
         self.deleted = True
+        self.quantitySold = 0
+        self.quantityRest = 0
         self.totalSale = 0.0
         self.totalAdvances = 0.0
         self.totalCurrent = 0.0
