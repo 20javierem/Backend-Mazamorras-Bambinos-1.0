@@ -14,7 +14,7 @@ async def get_all(user=Depends(manager)):
 
 
 @router.post("/", response_model=WorkerRead, status_code=status.HTTP_201_CREATED)
-async def create(schema: WorkerBase):
+async def create(schema: WorkerBase, user=Depends(manager)):
     worker: Worker = Worker.from_orm(schema)
     worker.save()
     return worker
