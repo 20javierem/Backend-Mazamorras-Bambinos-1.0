@@ -67,9 +67,7 @@ async def delete(id: int, user=Depends(manager)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     place_sale_id: int = motion.placeSale_id
     day_sale_id: int = motion.daySale_id
-    motion.amount = 0.0
-    motion.deleted = True
-    motion.save()
+    motion.delete()
 
     if place_sale_id is not None:
         placeSale: PlaceSale = place_sales.get(place_sale_id)

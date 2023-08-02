@@ -66,9 +66,7 @@ async def delete(id: int, user=Depends(manager)):
 
     place_sale_id: int = advance.placeSale_id
     day_sale_id: int = advance.daySale_id
-    advance.amount = 0.0
-    advance.deleted = True
-    advance.save()
+    advance.delete()
 
     if place_sale_id is not None:
         placeSale: PlaceSale = place_sales.get(place_sale_id)
