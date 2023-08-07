@@ -55,9 +55,13 @@ async def delete(id: int, user=Depends(manager)):
     placesSalesModifies: list[int] = list()
 
     for transfer in placeSale.transfersEntry:
-        delete_transfer(placesSalesModifies, transfer.id)
+        if transfer.source_id not in placesSalesModifies:
+            placesSalesModifies.append(transfer.source_id)
+        delete_transfer(transfer)
     for transfer in placeSale.transfersExit:
-        delete_transfer(placesSalesModifies, transfer.id)
+        if transfer.destiny_id not in placesSalesModifies:
+            placesSalesModifies.append(transfer.destiny_id)
+        delete_transfer(transfer)
 
     for motion in placeSale.motions:
         motion: Motion = motions.get(motion.id)
@@ -117,8 +121,6 @@ async def get_by_place_worker_between(idWorker: int, idPlace: int, start: str, e
     return place_sales_list
 
 
-def delete_transfer(placesSalesModifies: list[int], idTransfer: int):
-    if idTransfer not in placesSalesModifies:
-        placesSalesModifies.append(idTransfer)
-    transfer: Transfer = transfers.get(idTransfer)
+def delete_transfer(transfer: Transfer):
+    transfer: Transfer = transfers.get(transfer.id)
     transfer.delete()
