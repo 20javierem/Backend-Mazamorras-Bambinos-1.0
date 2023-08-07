@@ -8,7 +8,7 @@ from config.moreno import Moreno
 
 class MotionBase(SQLModel):
     description: str
-    amount: condecimal(decimal_places=1) = Field(default=0)
+    amount: condecimal(max_digits=10, decimal_places=1) = Field(default=0)
     income: bool
     daySale_id: int = Field(default=None, foreign_key="day_sale_tbl.id")
     placeSale_id: int = Field(default=None, foreign_key="place_sale_tbl.id")
@@ -44,4 +44,4 @@ class MotionWithDetails(MotionRead):
 class MotionUpdate(SQLModel):
     description: Optional[str]
     income: Optional[bool]
-    amount: Optional[condecimal(decimal_places=1)]
+    amount: Optional[condecimal(max_digits=10, decimal_places=1)]

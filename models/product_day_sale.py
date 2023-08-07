@@ -80,4 +80,4 @@ class ProductDaySaleReadWithDetails(ProductDaySaleRead):
 
 
 class ProductDaySaleUpdate(SQLModel):
-    price: condecimal(decimal_places=1)
+    price: condecimal(max_digits=10, decimal_places=1)

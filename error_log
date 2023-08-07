@@ -1,0 +1,904 @@
+[2023-07-31 01:02:20 +0000] [4911] [DEBUG] Current configuration:
+  config: gunicorn_conf.py
+  wsgi_app: None
+  bind: ['unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock']
+  backlog: 2048
+  workers: 2
+  worker_class: uvicorn.workers.UvicornWorker
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 30
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  print_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /home/ubuntu/apps/Mazamorras-Bambinos-1.0
+  daemon: False
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 1000
+  group: 33
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/access_log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/error_log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  logconfig_json: None
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  dogstatsd_tags: 
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: main:app
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f46783a7760>
+  on_reload: <function OnReload.on_reload at 0x7f46783a7880>
+  when_ready: <function WhenReady.when_ready at 0x7f46783a79a0>
+  pre_fork: <function Prefork.pre_fork at 0x7f46783a7ac0>
+  post_fork: <function Postfork.post_fork at 0x7f46783a7be0>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f46783a7d00>
+  worker_int: <function WorkerInt.worker_int at 0x7f46783a7e20>
+  worker_abort: <function WorkerAbort.worker_abort at 0x7f46783a7f40>
+  pre_exec: <function PreExec.pre_exec at 0x7f46783c40d0>
+  pre_request: <function PreRequest.pre_request at 0x7f46783c41f0>
+  post_request: <function PostRequest.post_request at 0x7f46783c4280>
+  child_exit: <function ChildExit.child_exit at 0x7f46783c43a0>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f46783c44c0>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f46783c45e0>
+  on_exit: <function OnExit.on_exit at 0x7f46783c4700>
+  ssl_context: <function NewSSLContext.ssl_context at 0x7f46783c4820>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: None
+  raw_paste_global_conf: []
+  strip_header_spaces: False
+[2023-07-31 01:02:20 +0000] [4911] [INFO] Starting gunicorn 21.2.0
+[2023-07-31 01:02:20 +0000] [4911] [DEBUG] Arbiter booted
+[2023-07-31 01:02:20 +0000] [4911] [INFO] Listening at: unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock (4911)
+[2023-07-31 01:02:20 +0000] [4911] [INFO] Using worker: uvicorn.workers.UvicornWorker
+[2023-07-31 01:02:20 +0000] [4912] [INFO] Booting worker with pid: 4912
+[2023-07-31 01:02:20 +0000] [4913] [INFO] Booting worker with pid: 4913
+[2023-07-31 01:02:20 +0000] [4911] [DEBUG] 2 workers
+[2023-07-31 01:02:21 +0000] [4912] [INFO] Started server process [4912]
+[2023-07-31 01:02:21 +0000] [4912] [INFO] Waiting for application startup.
+[2023-07-31 01:02:21 +0000] [4912] [INFO] Application startup complete.
+[2023-07-31 01:02:21 +0000] [4913] [INFO] Started server process [4913]
+[2023-07-31 01:02:21 +0000] [4913] [INFO] Waiting for application startup.
+[2023-07-31 01:02:21 +0000] [4913] [INFO] Application startup complete.
+[2023-07-31 02:04:54 +0000] [4911] [INFO] Handling signal: term
+[2023-07-31 02:04:54 +0000] [4913] [INFO] Shutting down
+[2023-07-31 02:04:54 +0000] [4912] [INFO] Shutting down
+[2023-07-31 02:04:54 +0000] [4913] [INFO] Waiting for application shutdown.
+[2023-07-31 02:04:54 +0000] [4913] [INFO] Application shutdown complete.
+[2023-07-31 02:04:54 +0000] [4913] [INFO] Finished server process [4913]
+[2023-07-31 02:04:54 +0000] [4913] [INFO] Worker exiting (pid: 4913)
+[2023-07-31 02:04:54 +0000] [4912] [INFO] Waiting for application shutdown.
+[2023-07-31 02:04:54 +0000] [4912] [INFO] Application shutdown complete.
+[2023-07-31 02:04:54 +0000] [4912] [INFO] Finished server process [4912]
+[2023-07-31 02:04:54 +0000] [4912] [INFO] Worker exiting (pid: 4912)
+[2023-07-31 02:04:54 +0000] [4911] [INFO] Shutting down: Master
+[2023-07-31 02:04:59 +0000] [6603] [DEBUG] Current configuration:
+  config: gunicorn_conf.py
+  wsgi_app: None
+  bind: ['unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock']
+  backlog: 2048
+  workers: 2
+  worker_class: uvicorn.workers.UvicornWorker
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 30
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  print_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /home/ubuntu/apps/Mazamorras-Bambinos-1.0
+  daemon: False
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 1000
+  group: 33
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/access_log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/error_log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  logconfig_json: None
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  dogstatsd_tags: 
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: main:app
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f9ddbe1f760>
+  on_reload: <function OnReload.on_reload at 0x7f9ddbe1f880>
+  when_ready: <function WhenReady.when_ready at 0x7f9ddbe1f9a0>
+  pre_fork: <function Prefork.pre_fork at 0x7f9ddbe1fac0>
+  post_fork: <function Postfork.post_fork at 0x7f9ddbe1fbe0>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f9ddbe1fd00>
+  worker_int: <function WorkerInt.worker_int at 0x7f9ddbe1fe20>
+  worker_abort: <function WorkerAbort.worker_abort at 0x7f9ddbe1ff40>
+  pre_exec: <function PreExec.pre_exec at 0x7f9ddbe3c0d0>
+  pre_request: <function PreRequest.pre_request at 0x7f9ddbe3c1f0>
+  post_request: <function PostRequest.post_request at 0x7f9ddbe3c280>
+  child_exit: <function ChildExit.child_exit at 0x7f9ddbe3c3a0>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f9ddbe3c4c0>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f9ddbe3c5e0>
+  on_exit: <function OnExit.on_exit at 0x7f9ddbe3c700>
+  ssl_context: <function NewSSLContext.ssl_context at 0x7f9ddbe3c820>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: None
+  raw_paste_global_conf: []
+  strip_header_spaces: False
+[2023-07-31 02:04:59 +0000] [6603] [INFO] Starting gunicorn 21.2.0
+[2023-07-31 02:04:59 +0000] [6603] [DEBUG] Arbiter booted
+[2023-07-31 02:04:59 +0000] [6603] [INFO] Listening at: unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock (6603)
+[2023-07-31 02:04:59 +0000] [6603] [INFO] Using worker: uvicorn.workers.UvicornWorker
+[2023-07-31 02:04:59 +0000] [6604] [INFO] Booting worker with pid: 6604
+[2023-07-31 02:04:59 +0000] [6605] [INFO] Booting worker with pid: 6605
+[2023-07-31 02:04:59 +0000] [6603] [DEBUG] 2 workers
+[2023-07-31 02:05:01 +0000] [6605] [INFO] Started server process [6605]
+[2023-07-31 02:05:01 +0000] [6605] [INFO] Waiting for application startup.
+[2023-07-31 02:05:01 +0000] [6605] [INFO] Application startup complete.
+[2023-07-31 02:05:01 +0000] [6604] [INFO] Started server process [6604]
+[2023-07-31 02:05:01 +0000] [6604] [INFO] Waiting for application startup.
+[2023-07-31 02:05:01 +0000] [6604] [INFO] Application startup complete.
+[2023-07-31 02:22:13 +0000] [6603] [INFO] Handling signal: term
+[2023-07-31 02:22:13 +0000] [6604] [INFO] Shutting down
+[2023-07-31 02:22:13 +0000] [6605] [INFO] Shutting down
+[2023-07-31 02:22:13 +0000] [6604] [INFO] Waiting for application shutdown.
+[2023-07-31 02:22:13 +0000] [6604] [INFO] Application shutdown complete.
+[2023-07-31 02:22:13 +0000] [6604] [INFO] Finished server process [6604]
+[2023-07-31 02:22:13 +0000] [6604] [INFO] Worker exiting (pid: 6604)
+[2023-07-31 02:22:13 +0000] [6605] [INFO] Waiting for application shutdown.
+[2023-07-31 02:22:13 +0000] [6605] [INFO] Application shutdown complete.
+[2023-07-31 02:22:13 +0000] [6605] [INFO] Finished server process [6605]
+[2023-07-31 02:22:13 +0000] [6605] [INFO] Worker exiting (pid: 6605)
+[2023-07-31 02:22:15 +0000] [6603] [INFO] Shutting down: Master
+[2023-07-31 02:23:25 +0000] [412] [DEBUG] Current configuration:
+  config: gunicorn_conf.py
+  wsgi_app: None
+  bind: ['unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock']
+  backlog: 2048
+  workers: 2
+  worker_class: uvicorn.workers.UvicornWorker
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 30
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  print_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /home/ubuntu/apps/Mazamorras-Bambinos-1.0
+  daemon: False
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 1000
+  group: 33
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/access_log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/error_log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  logconfig_json: None
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  dogstatsd_tags: 
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: main:app
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7fb92e5a3760>
+  on_reload: <function OnReload.on_reload at 0x7fb92e5a3880>
+  when_ready: <function WhenReady.when_ready at 0x7fb92e5a39a0>
+  pre_fork: <function Prefork.pre_fork at 0x7fb92e5a3ac0>
+  post_fork: <function Postfork.post_fork at 0x7fb92e5a3be0>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fb92e5a3d00>
+  worker_int: <function WorkerInt.worker_int at 0x7fb92e5a3e20>
+  worker_abort: <function WorkerAbort.worker_abort at 0x7fb92e5a3f40>
+  pre_exec: <function PreExec.pre_exec at 0x7fb92e5c00d0>
+  pre_request: <function PreRequest.pre_request at 0x7fb92e5c01f0>
+  post_request: <function PostRequest.post_request at 0x7fb92e5c0280>
+  child_exit: <function ChildExit.child_exit at 0x7fb92e5c03a0>
+  worker_exit: <function WorkerExit.worker_exit at 0x7fb92e5c04c0>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fb92e5c05e0>
+  on_exit: <function OnExit.on_exit at 0x7fb92e5c0700>
+  ssl_context: <function NewSSLContext.ssl_context at 0x7fb92e5c0820>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: None
+  raw_paste_global_conf: []
+  strip_header_spaces: False
+[2023-07-31 02:23:25 +0000] [412] [INFO] Starting gunicorn 21.2.0
+[2023-07-31 02:23:25 +0000] [412] [DEBUG] Arbiter booted
+[2023-07-31 02:23:25 +0000] [412] [INFO] Listening at: unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock (412)
+[2023-07-31 02:23:25 +0000] [412] [INFO] Using worker: uvicorn.workers.UvicornWorker
+[2023-07-31 02:23:25 +0000] [606] [INFO] Booting worker with pid: 606
+[2023-07-31 02:23:25 +0000] [607] [INFO] Booting worker with pid: 607
+[2023-07-31 02:23:25 +0000] [412] [DEBUG] 2 workers
+[2023-07-31 02:23:32 +0000] [607] [INFO] Started server process [607]
+[2023-07-31 02:23:32 +0000] [607] [INFO] Waiting for application startup.
+[2023-07-31 02:23:32 +0000] [607] [INFO] Application startup complete.
+[2023-07-31 02:23:32 +0000] [606] [INFO] Started server process [606]
+[2023-07-31 02:23:32 +0000] [606] [INFO] Waiting for application startup.
+[2023-07-31 02:23:32 +0000] [606] [INFO] Application startup complete.
+[2023-07-31 02:24:56 +0000] [412] [INFO] Handling signal: term
+[2023-07-31 02:24:56 +0000] [606] [INFO] Shutting down
+[2023-07-31 02:24:56 +0000] [607] [INFO] Shutting down
+[2023-07-31 02:24:56 +0000] [606] [INFO] Waiting for application shutdown.
+[2023-07-31 02:24:56 +0000] [606] [INFO] Application shutdown complete.
+[2023-07-31 02:24:56 +0000] [606] [INFO] Finished server process [606]
+[2023-07-31 02:24:56 +0000] [606] [INFO] Worker exiting (pid: 606)
+[2023-07-31 02:24:56 +0000] [607] [INFO] Waiting for application shutdown.
+[2023-07-31 02:24:56 +0000] [607] [INFO] Application shutdown complete.
+[2023-07-31 02:24:56 +0000] [607] [INFO] Finished server process [607]
+[2023-07-31 02:24:56 +0000] [607] [INFO] Worker exiting (pid: 607)
+[2023-07-31 02:24:56 +0000] [412] [INFO] Shutting down: Master
+[2023-07-31 02:44:23 +0000] [412] [DEBUG] Current configuration:
+  config: gunicorn_conf.py
+  wsgi_app: None
+  bind: ['unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock']
+  backlog: 2048
+  workers: 2
+  worker_class: uvicorn.workers.UvicornWorker
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 30
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  print_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /home/ubuntu/apps/Mazamorras-Bambinos-1.0
+  daemon: False
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 1000
+  group: 33
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/access_log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/error_log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  logconfig_json: None
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  dogstatsd_tags: 
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: main:app
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7fa04a3a3760>
+  on_reload: <function OnReload.on_reload at 0x7fa04a3a3880>
+  when_ready: <function WhenReady.when_ready at 0x7fa04a3a39a0>
+  pre_fork: <function Prefork.pre_fork at 0x7fa04a3a3ac0>
+  post_fork: <function Postfork.post_fork at 0x7fa04a3a3be0>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fa04a3a3d00>
+  worker_int: <function WorkerInt.worker_int at 0x7fa04a3a3e20>
+  worker_abort: <function WorkerAbort.worker_abort at 0x7fa04a3a3f40>
+  pre_exec: <function PreExec.pre_exec at 0x7fa04a3c00d0>
+  pre_request: <function PreRequest.pre_request at 0x7fa04a3c01f0>
+  post_request: <function PostRequest.post_request at 0x7fa04a3c0280>
+  child_exit: <function ChildExit.child_exit at 0x7fa04a3c03a0>
+  worker_exit: <function WorkerExit.worker_exit at 0x7fa04a3c04c0>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fa04a3c05e0>
+  on_exit: <function OnExit.on_exit at 0x7fa04a3c0700>
+  ssl_context: <function NewSSLContext.ssl_context at 0x7fa04a3c0820>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: None
+  raw_paste_global_conf: []
+  strip_header_spaces: False
+[2023-07-31 02:44:23 +0000] [412] [INFO] Starting gunicorn 21.2.0
+[2023-07-31 02:44:23 +0000] [412] [DEBUG] Arbiter booted
+[2023-07-31 02:44:23 +0000] [412] [INFO] Listening at: unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock (412)
+[2023-07-31 02:44:23 +0000] [412] [INFO] Using worker: uvicorn.workers.UvicornWorker
+[2023-07-31 02:44:23 +0000] [607] [INFO] Booting worker with pid: 607
+[2023-07-31 02:44:23 +0000] [608] [INFO] Booting worker with pid: 608
+[2023-07-31 02:44:23 +0000] [412] [DEBUG] 2 workers
+[2023-07-31 02:44:31 +0000] [608] [INFO] Started server process [608]
+[2023-07-31 02:44:31 +0000] [608] [INFO] Waiting for application startup.
+[2023-07-31 02:44:31 +0000] [608] [INFO] Application startup complete.
+[2023-07-31 02:44:31 +0000] [607] [INFO] Started server process [607]
+[2023-07-31 02:44:31 +0000] [607] [INFO] Waiting for application startup.
+[2023-07-31 02:44:31 +0000] [607] [INFO] Application startup complete.
+[2023-07-31 03:55:05 +0000] [412] [INFO] Handling signal: term
+[2023-07-31 03:55:05 +0000] [608] [INFO] Shutting down
+[2023-07-31 03:55:05 +0000] [607] [INFO] Shutting down
+[2023-07-31 03:55:05 +0000] [608] [INFO] Waiting for application shutdown.
+[2023-07-31 03:55:05 +0000] [608] [INFO] Application shutdown complete.
+[2023-07-31 03:55:05 +0000] [608] [INFO] Finished server process [608]
+[2023-07-31 03:55:05 +0000] [608] [INFO] Worker exiting (pid: 608)
+[2023-07-31 03:55:05 +0000] [607] [INFO] Waiting for application shutdown.
+[2023-07-31 03:55:05 +0000] [607] [INFO] Application shutdown complete.
+[2023-07-31 03:55:05 +0000] [607] [INFO] Finished server process [607]
+[2023-07-31 03:55:05 +0000] [607] [INFO] Worker exiting (pid: 607)
+[2023-07-31 03:55:06 +0000] [412] [INFO] Shutting down: Master
+[2023-07-31 03:55:06 +0000] [1222] [DEBUG] Current configuration:
+  config: gunicorn_conf.py
+  wsgi_app: None
+  bind: ['unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock']
+  backlog: 2048
+  workers: 2
+  worker_class: uvicorn.workers.UvicornWorker
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 30
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  print_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /home/ubuntu/apps/Mazamorras-Bambinos-1.0
+  daemon: False
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 1000
+  group: 33
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/access_log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/error_log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  logconfig_json: None
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  dogstatsd_tags: 
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: main:app
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7ff23f76b760>
+  on_reload: <function OnReload.on_reload at 0x7ff23f76b880>
+  when_ready: <function WhenReady.when_ready at 0x7ff23f76b9a0>
+  pre_fork: <function Prefork.pre_fork at 0x7ff23f76bac0>
+  post_fork: <function Postfork.post_fork at 0x7ff23f76bbe0>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7ff23f76bd00>
+  worker_int: <function WorkerInt.worker_int at 0x7ff23f76be20>
+  worker_abort: <function WorkerAbort.worker_abort at 0x7ff23f76bf40>
+  pre_exec: <function PreExec.pre_exec at 0x7ff23f7880d0>
+  pre_request: <function PreRequest.pre_request at 0x7ff23f7881f0>
+  post_request: <function PostRequest.post_request at 0x7ff23f788280>
+  child_exit: <function ChildExit.child_exit at 0x7ff23f7883a0>
+  worker_exit: <function WorkerExit.worker_exit at 0x7ff23f7884c0>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7ff23f7885e0>
+  on_exit: <function OnExit.on_exit at 0x7ff23f788700>
+  ssl_context: <function NewSSLContext.ssl_context at 0x7ff23f788820>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: None
+  raw_paste_global_conf: []
+  strip_header_spaces: False
+[2023-07-31 03:55:06 +0000] [1222] [INFO] Starting gunicorn 21.2.0
+[2023-07-31 03:55:06 +0000] [1222] [DEBUG] Arbiter booted
+[2023-07-31 03:55:06 +0000] [1222] [INFO] Listening at: unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock (1222)
+[2023-07-31 03:55:06 +0000] [1222] [INFO] Using worker: uvicorn.workers.UvicornWorker
+[2023-07-31 03:55:06 +0000] [1223] [INFO] Booting worker with pid: 1223
+[2023-07-31 03:55:06 +0000] [1224] [INFO] Booting worker with pid: 1224
+[2023-07-31 03:55:06 +0000] [1222] [DEBUG] 2 workers
+[2023-07-31 03:55:08 +0000] [1223] [INFO] Started server process [1223]
+[2023-07-31 03:55:08 +0000] [1223] [INFO] Waiting for application startup.
+[2023-07-31 03:55:08 +0000] [1223] [INFO] Application startup complete.
+[2023-07-31 03:55:08 +0000] [1224] [INFO] Started server process [1224]
+[2023-07-31 03:55:08 +0000] [1224] [INFO] Waiting for application startup.
+[2023-07-31 03:55:08 +0000] [1224] [INFO] Application startup complete.
+[2023-07-31 03:55:31 +0000] [1222] [INFO] Handling signal: term
+[2023-07-31 03:55:31 +0000] [1223] [INFO] Shutting down
+[2023-07-31 03:55:31 +0000] [1224] [INFO] Shutting down
+[2023-07-31 03:55:31 +0000] [1223] [INFO] Waiting for application shutdown.
+[2023-07-31 03:55:31 +0000] [1223] [INFO] Application shutdown complete.
+[2023-07-31 03:55:31 +0000] [1223] [INFO] Finished server process [1223]
+[2023-07-31 03:55:31 +0000] [1223] [INFO] Worker exiting (pid: 1223)
+[2023-07-31 03:55:31 +0000] [1224] [INFO] Waiting for application shutdown.
+[2023-07-31 03:55:31 +0000] [1224] [INFO] Application shutdown complete.
+[2023-07-31 03:55:31 +0000] [1224] [INFO] Finished server process [1224]
+[2023-07-31 03:55:31 +0000] [1224] [INFO] Worker exiting (pid: 1224)
+[2023-07-31 03:55:31 +0000] [1222] [INFO] Shutting down: Master
+[2023-07-31 04:26:56 +0000] [1021] [DEBUG] Current configuration:
+  config: gunicorn_conf.py
+  wsgi_app: None
+  bind: ['unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock']
+  backlog: 2048
+  workers: 2
+  worker_class: uvicorn.workers.UvicornWorker
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 30
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  print_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /home/ubuntu/apps/Mazamorras-Bambinos-1.0
+  daemon: False
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 1000
+  group: 33
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/access_log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/error_log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  logconfig_json: None
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  dogstatsd_tags: 
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: main:app
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f4b299af760>
+  on_reload: <function OnReload.on_reload at 0x7f4b299af880>
+  when_ready: <function WhenReady.when_ready at 0x7f4b299af9a0>
+  pre_fork: <function Prefork.pre_fork at 0x7f4b299afac0>
+  post_fork: <function Postfork.post_fork at 0x7f4b299afbe0>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f4b299afd00>
+  worker_int: <function WorkerInt.worker_int at 0x7f4b299afe20>
+  worker_abort: <function WorkerAbort.worker_abort at 0x7f4b299aff40>
+  pre_exec: <function PreExec.pre_exec at 0x7f4b299cc0d0>
+  pre_request: <function PreRequest.pre_request at 0x7f4b299cc1f0>
+  post_request: <function PostRequest.post_request at 0x7f4b299cc280>
+  child_exit: <function ChildExit.child_exit at 0x7f4b299cc3a0>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f4b299cc4c0>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f4b299cc5e0>
+  on_exit: <function OnExit.on_exit at 0x7f4b299cc700>
+  ssl_context: <function NewSSLContext.ssl_context at 0x7f4b299cc820>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: None
+  raw_paste_global_conf: []
+  strip_header_spaces: False
+[2023-07-31 04:26:56 +0000] [1021] [INFO] Starting gunicorn 21.2.0
+[2023-07-31 04:26:56 +0000] [1021] [DEBUG] Arbiter booted
+[2023-07-31 04:26:56 +0000] [1021] [INFO] Listening at: unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock (1021)
+[2023-07-31 04:26:56 +0000] [1021] [INFO] Using worker: uvicorn.workers.UvicornWorker
+[2023-07-31 04:26:56 +0000] [1022] [INFO] Booting worker with pid: 1022
+[2023-07-31 04:26:56 +0000] [1023] [INFO] Booting worker with pid: 1023
+[2023-07-31 04:26:56 +0000] [1021] [DEBUG] 2 workers
+[2023-07-31 04:26:57 +0000] [1022] [INFO] Started server process [1022]
+[2023-07-31 04:26:57 +0000] [1022] [INFO] Waiting for application startup.
+[2023-07-31 04:26:57 +0000] [1022] [INFO] Application startup complete.
+[2023-07-31 04:26:57 +0000] [1023] [INFO] Started server process [1023]
+[2023-07-31 04:26:57 +0000] [1023] [INFO] Waiting for application startup.
+[2023-07-31 04:26:57 +0000] [1023] [INFO] Application startup complete.
+[2023-07-31 04:31:49 +0000] [1021] [INFO] Handling signal: term
+[2023-07-31 04:31:49 +0000] [1023] [INFO] Shutting down
+[2023-07-31 04:31:49 +0000] [1022] [INFO] Shutting down
+[2023-07-31 04:31:49 +0000] [1023] [INFO] Waiting for application shutdown.
+[2023-07-31 04:31:49 +0000] [1023] [INFO] Application shutdown complete.
+[2023-07-31 04:31:49 +0000] [1023] [INFO] Finished server process [1023]
+[2023-07-31 04:31:49 +0000] [1023] [INFO] Worker exiting (pid: 1023)
+[2023-07-31 04:31:49 +0000] [1022] [INFO] Waiting for application shutdown.
+[2023-07-31 04:31:49 +0000] [1022] [INFO] Application shutdown complete.
+[2023-07-31 04:31:49 +0000] [1022] [INFO] Finished server process [1022]
+[2023-07-31 04:31:49 +0000] [1022] [INFO] Worker exiting (pid: 1022)
+[2023-07-31 04:31:49 +0000] [1021] [INFO] Shutting down: Master
+[2023-07-31 04:31:49 +0000] [1059] [DEBUG] Current configuration:
+  config: gunicorn_conf.py
+  wsgi_app: None
+  bind: ['unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock']
+  backlog: 2048
+  workers: 2
+  worker_class: uvicorn.workers.UvicornWorker
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 30
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  print_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /home/ubuntu/apps/Mazamorras-Bambinos-1.0
+  daemon: False
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 1000
+  group: 33
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/access_log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/error_log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  logconfig_json: None
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  dogstatsd_tags: 
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: main:app
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f315d53f760>
+  on_reload: <function OnReload.on_reload at 0x7f315d53f880>
+  when_ready: <function WhenReady.when_ready at 0x7f315d53f9a0>
+  pre_fork: <function Prefork.pre_fork at 0x7f315d53fac0>
+  post_fork: <function Postfork.post_fork at 0x7f315d53fbe0>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f315d53fd00>
+  worker_int: <function WorkerInt.worker_int at 0x7f315d53fe20>
+  worker_abort: <function WorkerAbort.worker_abort at 0x7f315d53ff40>
+  pre_exec: <function PreExec.pre_exec at 0x7f315d55c0d0>
+  pre_request: <function PreRequest.pre_request at 0x7f315d55c1f0>
+  post_request: <function PostRequest.post_request at 0x7f315d55c280>
+  child_exit: <function ChildExit.child_exit at 0x7f315d55c3a0>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f315d55c4c0>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f315d55c5e0>
+  on_exit: <function OnExit.on_exit at 0x7f315d55c700>
+  ssl_context: <function NewSSLContext.ssl_context at 0x7f315d55c820>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: None
+  raw_paste_global_conf: []
+  strip_header_spaces: False
+[2023-07-31 04:31:49 +0000] [1059] [INFO] Starting gunicorn 21.2.0
+[2023-07-31 04:31:49 +0000] [1059] [DEBUG] Arbiter booted
+[2023-07-31 04:31:49 +0000] [1059] [INFO] Listening at: unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock (1059)
+[2023-07-31 04:31:49 +0000] [1059] [INFO] Using worker: uvicorn.workers.UvicornWorker
+[2023-07-31 04:31:49 +0000] [1060] [INFO] Booting worker with pid: 1060
+[2023-07-31 04:31:49 +0000] [1061] [INFO] Booting worker with pid: 1061
+[2023-07-31 04:31:50 +0000] [1059] [DEBUG] 2 workers
+[2023-07-31 04:31:51 +0000] [1060] [INFO] Started server process [1060]
+[2023-07-31 04:31:51 +0000] [1060] [INFO] Waiting for application startup.
+[2023-07-31 04:31:51 +0000] [1060] [INFO] Application startup complete.
+[2023-07-31 04:31:51 +0000] [1061] [INFO] Started server process [1061]
+[2023-07-31 04:31:51 +0000] [1061] [INFO] Waiting for application startup.
+[2023-07-31 04:31:51 +0000] [1061] [INFO] Application startup complete.
+[2023-07-31 04:33:20 +0000] [1059] [INFO] Handling signal: term
+[2023-07-31 04:33:20 +0000] [1061] [INFO] Shutting down
+[2023-07-31 04:33:20 +0000] [1060] [INFO] Shutting down
+[2023-07-31 04:33:20 +0000] [1061] [INFO] Waiting for application shutdown.
+[2023-07-31 04:33:20 +0000] [1061] [INFO] Application shutdown complete.
+[2023-07-31 04:33:20 +0000] [1061] [INFO] Finished server process [1061]
+[2023-07-31 04:33:20 +0000] [1061] [INFO] Worker exiting (pid: 1061)
+[2023-07-31 04:33:20 +0000] [1060] [INFO] Waiting for application shutdown.
+[2023-07-31 04:33:20 +0000] [1060] [INFO] Application shutdown complete.
+[2023-07-31 04:33:20 +0000] [1060] [INFO] Finished server process [1060]
+[2023-07-31 04:33:20 +0000] [1060] [INFO] Worker exiting (pid: 1060)
+[2023-07-31 04:33:21 +0000] [1059] [INFO] Shutting down: Master
+[2023-07-31 04:33:21 +0000] [1075] [DEBUG] Current configuration:
+  config: gunicorn_conf.py
+  wsgi_app: None
+  bind: ['unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock']
+  backlog: 2048
+  workers: 2
+  worker_class: uvicorn.workers.UvicornWorker
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 30
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  print_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /home/ubuntu/apps/Mazamorras-Bambinos-1.0
+  daemon: False
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 1000
+  group: 33
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/access_log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: /home/ubuntu/apps/Mazamorras-Bambinos-1.0/error_log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  logconfig_json: None
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  dogstatsd_tags: 
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: main:app
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f76259cf760>
+  on_reload: <function OnReload.on_reload at 0x7f76259cf880>
+  when_ready: <function WhenReady.when_ready at 0x7f76259cf9a0>
+  pre_fork: <function Prefork.pre_fork at 0x7f76259cfac0>
+  post_fork: <function Postfork.post_fork at 0x7f76259cfbe0>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f76259cfd00>
+  worker_int: <function WorkerInt.worker_int at 0x7f76259cfe20>
+  worker_abort: <function WorkerAbort.worker_abort at 0x7f76259cff40>
+  pre_exec: <function PreExec.pre_exec at 0x7f76259ec0d0>
+  pre_request: <function PreRequest.pre_request at 0x7f76259ec1f0>
+  post_request: <function PostRequest.post_request at 0x7f76259ec280>
+  child_exit: <function ChildExit.child_exit at 0x7f76259ec3a0>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f76259ec4c0>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f76259ec5e0>
+  on_exit: <function OnExit.on_exit at 0x7f76259ec700>
+  ssl_context: <function NewSSLContext.ssl_context at 0x7f76259ec820>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: None
+  raw_paste_global_conf: []
+  strip_header_spaces: False
+[2023-07-31 04:33:21 +0000] [1075] [INFO] Starting gunicorn 21.2.0
+[2023-07-31 04:33:21 +0000] [1075] [DEBUG] Arbiter booted
+[2023-07-31 04:33:21 +0000] [1075] [INFO] Listening at: unix:/home/ubuntu/apps/Mazamorras-Bambinos-1.0/gunicorn.sock (1075)
+[2023-07-31 04:33:21 +0000] [1075] [INFO] Using worker: uvicorn.workers.UvicornWorker
+[2023-07-31 04:33:21 +0000] [1077] [INFO] Booting worker with pid: 1077
+[2023-07-31 04:33:21 +0000] [1075] [DEBUG] 2 workers
+[2023-07-31 04:33:21 +0000] [1078] [INFO] Booting worker with pid: 1078
+[2023-07-31 04:33:23 +0000] [1077] [INFO] Started server process [1077]
+[2023-07-31 04:33:23 +0000] [1077] [INFO] Waiting for application startup.
+[2023-07-31 04:33:23 +0000] [1077] [INFO] Application startup complete.
+[2023-07-31 04:33:23 +0000] [1078] [INFO] Started server process [1078]
+[2023-07-31 04:33:23 +0000] [1078] [INFO] Waiting for application startup.
+[2023-07-31 04:33:23 +0000] [1078] [INFO] Application startup complete.
+[2023-07-31 04:33:33 +0000] [1075] [INFO] Handling signal: term
+[2023-07-31 04:33:33 +0000] [1078] [INFO] Shutting down
+[2023-07-31 04:33:33 +0000] [1077] [INFO] Shutting down
+[2023-07-31 04:33:33 +0000] [1078] [INFO] Waiting for application shutdown.
+[2023-07-31 04:33:33 +0000] [1078] [INFO] Application shutdown complete.
+[2023-07-31 04:33:33 +0000] [1078] [INFO] Finished server process [1078]
+[2023-07-31 04:33:33 +0000] [1078] [INFO] Worker exiting (pid: 1078)
+[2023-07-31 04:33:33 +0000] [1077] [INFO] Waiting for application shutdown.
+[2023-07-31 04:33:33 +0000] [1077] [INFO] Application shutdown complete.
+[2023-07-31 04:33:33 +0000] [1077] [INFO] Finished server process [1077]
+[2023-07-31 04:33:33 +0000] [1077] [INFO] Worker exiting (pid: 1077)
+[2023-07-31 04:33:33 +0000] [1075] [INFO] Shutting down: Master

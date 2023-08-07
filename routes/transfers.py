@@ -60,7 +60,7 @@ async def delete(id: int, user=Depends(manager)):
     sourceOld_id: int = transfer.source_id
     destinyOld_id: int = transfer.destiny_id
     productDaySale_id: int = transfer.productDaySale_id
-    transfer.deleted = True
+    transfer.delete()
 
     update_totals(sourceOld_id, productDaySale_id)
     update_totals(destinyOld_id, productDaySale_id)

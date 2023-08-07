@@ -2,7 +2,7 @@ from contextlib import contextmanager
 
 from sqlmodel import Session as SQLModelSession, create_engine
 
-engine = create_engine('mysql+pymysql://root@localhost:3306/dbbambinos', echo=False)
+engine = create_engine('mysql+pymysql://root:Ernestomoreno1@localhost:3306/dbbambinos', echo=False)
 
 
 class Moreno:

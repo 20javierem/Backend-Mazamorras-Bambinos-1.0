@@ -9,7 +9,7 @@ from config.moreno import Moreno
 
 class AdvanceBase(SQLModel):
     description: str
-    amount: condecimal(decimal_places=1) = Field(default=0)
+    amount: condecimal(max_digits=10, decimal_places=1) = Field(default=0)
 
     daySale_id: int = Field(default=None, foreign_key="day_sale_tbl.id", nullable=True)
     placeSale_id: Optional[int] = Field(default=None, foreign_key="place_sale_tbl.id", nullable=True)
@@ -47,5 +47,5 @@ class AdvanceReadWithDetails(AdvanceRead):
 
 class AdvanceUpdate(SQLModel):
     description: Optional[str]
-    amount: Optional[condecimal(decimal_places=1)]
+    amount: Optional[condecimal(max_digits=10, decimal_places=1)]
     worker_id: Optional[int]
