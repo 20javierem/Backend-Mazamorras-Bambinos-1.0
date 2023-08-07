@@ -73,7 +73,7 @@ async def delete(id: int, user=Depends(manager)):
     placeSale.delete()
 
     for placeSale_id in placesSalesModifies:
-        placeSale = place_sales.get(placeSale_id)
+        placeSale: PlaceSale = place_sales.get(placeSale_id)
         for productPlaceSale in placeSale.productPlaceSales:
             productPlaceSale: ProductPlaceSale = product_place_sales.get(productPlaceSale.id)
             productPlaceSale.calculate_totals()
