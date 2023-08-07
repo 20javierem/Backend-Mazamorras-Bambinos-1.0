@@ -66,6 +66,12 @@ async def delete(id: int, user=Depends(manager)):
         advance: Advance = advances.get(advance.id)
         advance.delete()
 
+    for productPlaceSale in placeSale.productPlaceSales:
+        productPlaceSale: ProductPlaceSale = product_place_sales.get(productPlaceSale.id)
+        productPlaceSale.delete()
+
+    placeSale.delete()
+
     for placeSale_id in placesSalesModifies:
         placeSale = place_sales.get(placeSale_id)
         for productPlaceSale in placeSale.productPlaceSales:
@@ -76,14 +82,10 @@ async def delete(id: int, user=Depends(manager)):
         placeSale.calculate_totals()
         placeSale.save()
 
-    for productPlaceSale in placeSale.productPlaceSales:
-        productPlaceSale: ProductPlaceSale = product_place_sales.get(productPlaceSale.id)
-        productPlaceSale.delete()
-
-    placeSale.delete()
     daySale: DaySale = day_sales.get(daySale_id)
     daySale.calculate_totals()
     daySale.save()
+
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
