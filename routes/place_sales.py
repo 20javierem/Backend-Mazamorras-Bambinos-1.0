@@ -89,6 +89,7 @@ async def delete(id: int, user=Depends(manager)):
     daySale: DaySale = day_sales.get(daySale_id)
     daySale.calculate_totals()
     daySale.save()
+
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 

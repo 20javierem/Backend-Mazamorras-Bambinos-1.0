@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response, status, Depends, HTTPException
 
-import controllers.motions as expenses
+import controllers.motions as motions
 from controllers import place_sales, day_sales
 from models import PlaceSale, DaySale
 from models.motion import Motion, MotionUpdate, MotionRead, MotionBase
@@ -30,7 +30,7 @@ async def create(schema: MotionBase, user=Depends(manager)):
 
 @router.get("/{id}", response_model=MotionRead, status_code=status.HTTP_200_OK)
 async def get(id: int, user=Depends(manager)):
-    motion: MotionRead = expenses.get(id)
+    motion: MotionRead = motions.get(id)
     if motion is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     return motion
@@ -38,7 +38,7 @@ async def get(id: int, user=Depends(manager)):
 
 @router.patch('/{id}', response_model=Motion, status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, schema: MotionUpdate, user=Depends(manager)):
-    motion: Motion = expenses.get(id)
+    motion: Motion = motions.get(id)
     if not motion:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     schema_data = schema.dict(exclude_unset=True)
@@ -62,7 +62,7 @@ async def update(id: int, schema: MotionUpdate, user=Depends(manager)):
 
 @router.delete('/{id}')
 async def delete(id: int, user=Depends(manager)):
-    motion: Motion = expenses.get(id)
+    motion: Motion = motions.get(id)
     if not motion:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     place_sale_id: int = motion.placeSale_id
@@ -79,3 +79,9 @@ async def delete(id: int, user=Depends(manager)):
     daySale.save()
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+# @router.get("/{start}/{end}", response_model=list[DaySale], status_code=status.HTTP_200_OK)
+# async def get_between(start: str, end: str, user=Depends(manager)):
+#     motions_list: list[Motion] = motions.get_by_range_of_date(start, end)
+#     return motions_list
