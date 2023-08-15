@@ -115,6 +115,10 @@ class PlaceSaleRead(PlaceSaleBase):
     totalDelivered: float
 
 
+class PlaceSaleReadWithDaySale(PlaceSaleRead):
+    daySale: Optional["DaySaleRead"] = None
+
+
 class PlaceSaleReadWithDetails(PlaceSaleRead):
     worker: Optional["WorkerRead"] = None
     place: Optional["PlaceRead"] = None

@@ -41,7 +41,7 @@ class AdvanceRead(AdvanceBase):
 
 class AdvanceReadWithDetails(AdvanceRead):
     daySale: Optional["DaySaleRead"] = None
-    placeSale: Optional["PlaceSaleRead"] = None
+    placeSale: Optional["PlaceSaleReadWithDaySale"] = None
     worker: Optional["WorkerRead"] = None
 
 

@@ -38,7 +38,7 @@ class MotionRead(MotionBase):
 
 class MotionWithDetails(MotionRead):
     daySale: Optional["DaySaleRead"] = None
-    placeSale: Optional["PlaceSaleRead"] = None
+    placeSale: Optional["PlaceSaleReadWithDaySale"] = None
 
 
 class MotionUpdate(SQLModel):

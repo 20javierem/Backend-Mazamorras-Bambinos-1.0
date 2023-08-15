@@ -4,7 +4,7 @@ from models.motion import Motion, MotionRead, MotionWithDetails, MotionBase
 from models.place import Place, PlaceRead, PlaceReadWithType
 from models.place_sale import PlaceSale, PlaceSaleReadWithDetails, PlaceSaleRead, \
     PlaceSaleBase, PlaceSaleCreateWithDetails, PlaceSaleReadCreateWithDetails, PlaceSaleReadForDaySale, \
-    PlaceSaleReadForReport
+    PlaceSaleReadForReport, PlaceSaleReadWithDaySale
 from models.product import ProductRead, Product
 from models.product_day_sale import ProductDaySale, ProductDaySaleRead, ProductDaySaleReadWithDetails, \
     ProductDaySaleReadCreate, ProductDaySaleReadReport
@@ -25,11 +25,13 @@ WorkerReadWithType.update_forward_refs(TypeWorkerRead=TypeWorkerRead)
 
 Motion.update_forward_refs(DaySale=DaySale, PlaceSale=PlaceSale)
 
-MotionWithDetails.update_forward_refs(DaySaleRead=DaySaleRead, PlaceSaleRead=PlaceSaleRead)
+MotionWithDetails.update_forward_refs(DaySaleRead=DaySaleRead, PlaceSaleReadWithDaySale=PlaceSaleReadWithDaySale)
 
 Advance.update_forward_refs(DaySale=DaySale, PlaceSale=PlaceSale, Worker=Worker)
 
-AdvanceReadWithDetails.update_forward_refs(DaySaleRead=DaySaleRead, PlaceSaleRead=PlaceSaleRead, WorkerRead=WorkerRead)
+AdvanceReadWithDetails.update_forward_refs(DaySaleRead=DaySaleRead,
+                                           PlaceSaleReadWithDaySale=PlaceSaleReadWithDaySale,
+                                           WorkerRead=WorkerRead)
 
 Transfer.update_forward_refs(PlaceSale=PlaceSale, ProductDaySale=ProductDaySale)
 
@@ -67,6 +69,7 @@ ProductPlaceSaleReadWithDetails.update_forward_refs(ProductDaySaleRead=ProductDa
 PlaceSaleReadForDaySale.update_forward_refs(TransferRead=TransferRead, MotionRead=MotionRead, AdvanceRead=AdvanceRead)
 
 PlaceSaleReadForReport.update_forward_refs(WorkerRead=WorkerRead, PlaceRead=PlaceRead, DaySaleRead=DaySaleRead)
+PlaceSaleReadWithDaySale.update_forward_refs(DaySaleRead=DaySaleRead)
 
 ProductDaySaleReadReport.update_forward_refs(DaySaleRead=DaySaleRead)
 
