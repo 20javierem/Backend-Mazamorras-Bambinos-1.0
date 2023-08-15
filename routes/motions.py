@@ -86,6 +86,11 @@ async def delete(id: int, user=Depends(manager)):
 async def get_between(start: str, end: str, user=Depends(manager)):
     motions_list: list[Motion] = motions.get_between(start, end)
     motions_list.extend(motions.get_between2(start, end))
-    motions_list.sort(key=lambda x: (x.placeSale.daySale.date, x.daySale.date))
+    motions_list.sort(key=fun_sort)
     return motions_list
 
+
+def fun_sort(motion: Motion):
+    if motion.daySale is None:
+        return motion.placeSale.daySale.date
+    return motion.daySale.date
