@@ -55,9 +55,13 @@ async def delete(id: int, user=Depends(manager)):
     placesSalesModifies: list[int] = list()
 
     for transfer in placeSale.transfersEntry:
-        delete_transfer(placesSalesModifies, transfer.id)
+        if transfer.source_id not in placesSalesModifies:
+            placesSalesModifies.append(transfer.source_id)
+        delete_transfer(transfer)
     for transfer in placeSale.transfersExit:
-        delete_transfer(placesSalesModifies, transfer.id)
+        if transfer.destiny_id not in placesSalesModifies:
+            placesSalesModifies.append(transfer.destiny_id)
+        delete_transfer(transfer)
 
     for motion in placeSale.motions:
         motion: Motion = motions.get(motion.id)
@@ -66,8 +70,14 @@ async def delete(id: int, user=Depends(manager)):
         advance: Advance = advances.get(advance.id)
         advance.delete()
 
+    for productPlaceSale in placeSale.productPlaceSales:
+        productPlaceSale: ProductPlaceSale = product_place_sales.get(productPlaceSale.id)
+        productPlaceSale.delete()
+
+    placeSale.delete()
+
     for placeSale_id in placesSalesModifies:
-        placeSale = place_sales.get(placeSale_id)
+        placeSale: PlaceSale = place_sales.get(placeSale_id)
         for productPlaceSale in placeSale.productPlaceSales:
             productPlaceSale: ProductPlaceSale = product_place_sales.get(productPlaceSale.id)
             productPlaceSale.calculate_totals()
@@ -76,11 +86,6 @@ async def delete(id: int, user=Depends(manager)):
         placeSale.calculate_totals()
         placeSale.save()
 
-    for productPlaceSale in placeSale.productPlaceSales:
-        productPlaceSale: ProductPlaceSale = product_place_sales.get(productPlaceSale.id)
-        productPlaceSale.delete()
-
-    placeSale.delete()
     daySale: DaySale = day_sales.get(daySale_id)
     daySale.calculate_totals()
     daySale.save()
@@ -115,8 +120,6 @@ async def get_by_place_worker_between(idWorker: int, idPlace: int, start: str, e
     return place_sales_list
 
 
-def delete_transfer(placesSalesModifies: list[int], idTransfer: int):
-    if idTransfer not in placesSalesModifies:
-        placesSalesModifies.append(idTransfer)
-    transfer: Transfer = transfers.get(idTransfer)
+def delete_transfer(transfer: Transfer):
+    transfer: Transfer = transfers.get(transfer.id)
     transfer.delete()
