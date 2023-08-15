@@ -3,10 +3,11 @@ from fastapi import APIRouter, Response, status, Depends, HTTPException
 import controllers.motions as motions
 from controllers import place_sales, day_sales
 from models import PlaceSale, DaySale
-from models.motion import Motion, MotionUpdate, MotionRead, MotionBase
+from models.motion import Motion, MotionUpdate, MotionRead, MotionBase, MotionWithDetails
 from routes.users import manager
 
 router = APIRouter()
+
 
 @router.post("/", response_model=MotionRead, status_code=status.HTTP_201_CREATED)
 async def create(schema: MotionBase, user=Depends(manager)):
@@ -81,7 +82,10 @@ async def delete(id: int, user=Depends(manager)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-# @router.get("/{start}/{end}", response_model=list[DaySale], status_code=status.HTTP_200_OK)
-# async def get_between(start: str, end: str, user=Depends(manager)):
-#     motions_list: list[Motion] = motions.get_by_range_of_date(start, end)
-#     return motions_list
+@router.get("/{start}/{end}", response_model=list[MotionWithDetails], status_code=status.HTTP_200_OK)
+async def get_between(start: str, end: str, user=Depends(manager)):
+    motions_list: list[Motion] = motions.get_between(start, end)
+    motions_list.extend(motions.get_between2(start, end))
+    motions_list.sort(key=lambda x: (x.placeSale.daySale.date, x.daySale.date))
+    return motions_list
+

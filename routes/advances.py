@@ -78,3 +78,12 @@ async def delete(id: int, user=Depends(manager)):
     daySale.save()
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.get("/{start}/{end}", response_model=list[AdvanceReadWithDetails], status_code=status.HTTP_200_OK)
+async def get_between(start: str, end: str, user=Depends(manager)):
+    advances_list: list[Advance] = advances.get_between(start, end)
+    advances_list.extend(advances.get_between2(start, end))
+    advances_list.sort(key=lambda x: (x.daySale.date, -x.placeSale.daySale.date))
+    return advances_list
+
