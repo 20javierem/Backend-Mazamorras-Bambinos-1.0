@@ -152,3 +152,4 @@ class PlaceSaleReadForDaySale(PlaceSaleRead):
 class PlaceSaleUpdate(SQLModel):
     totalDelivered: float
     worker_id: int
+    place_id: int
