@@ -6,6 +6,7 @@ from sqlmodel import select
 
 from config.moreno import Session
 from models import Worker
+from models import Place
 from models.day_sale import DaySale
 from models.place_sale import PlaceSale
 
@@ -20,6 +21,16 @@ def get_by_day_sale_and_worker(idDaySale: int, idWorker: int):
         statement = select(PlaceSale).join(DaySale).join(Worker).where(
             invert(PlaceSale.deleted),
             Worker.id == idWorker,
+            DaySale.id == idDaySale
+        )
+        return session.exec(statement).first()
+
+
+def get_by_day_sale_and_place(idDaySale: int, idPlace: int):
+    with Session() as session:
+        statement = select(PlaceSale).join(DaySale).join(Place).where(
+            invert(PlaceSale.deleted),
+            Place.id == idPlace,
             DaySale.id == idDaySale
         )
         return session.exec(statement).first()

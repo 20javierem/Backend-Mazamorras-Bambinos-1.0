@@ -34,6 +34,7 @@ async def update(id: int, schema: PlaceSaleUpdate, user=Depends(manager)):
     if not placeSale:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"Error": "not found"})
     workerOld_id: int = placeSale.worker_id
+    placeOld_id: int = placeSale.place_id
     schema_data = schema.dict(exclude_unset=True)
     for key, value in schema_data.items():
         setattr(placeSale, key, value)
@@ -43,6 +44,13 @@ async def update(id: int, schema: PlaceSaleUpdate, user=Depends(manager)):
         if placeSaleModify:
             placeSaleModify.worker_id = workerOld_id
             placeSaleModify.save()
+
+    if placeSale.place_id != placeOld_id:
+        placeSaleModify: PlaceSale = place_sales.get_by_day_sale_and_worker(placeSale.daySale_id, placeSale.place_id)
+        if placeSaleModify:
+            placeSaleModify.place_id = placeOld_id
+            placeSaleModify.save()
+
     return placeSale.save()
 
 

@@ -15,6 +15,5 @@ from models.user import User
 from sqlmodel import Session as SQLModelSession
 from sqlmodel import SQLModel
 
-
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
