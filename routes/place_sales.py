@@ -46,7 +46,7 @@ async def update(id: int, schema: PlaceSaleUpdate, user=Depends(manager)):
             placeSaleModify.save()
 
     if placeSale.place_id != placeOld_id:
-        placeSaleModify: PlaceSale = place_sales.get_by_day_sale_and_worker(placeSale.daySale_id, placeSale.place_id)
+        placeSaleModify: PlaceSale = place_sales.get_by_day_sale_and_place(placeSale.daySale_id, placeSale.place_id)
         if placeSaleModify:
             placeSaleModify.place_id = placeOld_id
             placeSaleModify.save()
